@@ -83,10 +83,11 @@ pub fn interference_by_template(
 ///|
 /// 3×3 邻域均值（对齐 readPixel + fillMatrix + avgMatrix 的组合行为）。
 ///
-/// ⚠️ 忠实移植 Java 的两处怪癖（勿"修正"，否则输出与 AJ-Captcha 前端演示不一致）：
-/// 1. avgMatrix 跳过 `j == 1` 的**整列**——即跳过 y-1/y/y+1 中同一 y 行的全部 3 个像素，
-///    实际参与均值的是上下两行的 6 个像素（不是常规的 8 邻域）；
-/// 2. readPixel 边界处理不对称：x 越界取绝对值（-1 → 1），y 越界用当前 y 代替。
+/// ⚠️ 忠实移植 Java 的三处怪癖（勿"修正"，否则输出与 AJ-Captcha 不一致）：
+/// 1. avgMatrix 跳过 `j == 1` 的整行——即跳过 y 行的全部 3 个像素，
+///    实际参与求和的是上下两行的 6 个像素（不是常规的 8 邻域）；
+/// 2. 求和 6 个像素后**仍除以 8**（Java avgMatrix 的除数硬编码 8），凹槽因此偏暗；
+/// 3. readPixel 边界处理不对称：x 越界取绝对值（-1 → 1），y 越界用当前 y 代替。
 fn avg_matrix_around(img : PixelBuffer, x : Int, y : Int) -> Int {
   let mut r = 0
   let mut g = 0
@@ -125,5 +126,6 @@ fn avg_matrix_around(img : PixelBuffer, x : Int, y : Int) -> Int {
       b = b + (rgb & 0xFF)
     }
   }
-  (0xFF << 24) | ((r / 6) << 16) | ((g / 6) << 8) | (b / 6)
+  // Java avgMatrix 除数硬编码 8（尽管只累加 6 个像素）
+  (0xFF << 24) | ((r / 8) << 16) | ((g / 8) << 8) | (b / 8)
 }

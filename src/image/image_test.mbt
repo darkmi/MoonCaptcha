@@ -61,9 +61,10 @@ test "cut_by_template interior copies background with blur" {
   // 内部像素（alpha=255）小图颜色 = 原背景色
   assert_true(@image.alpha_of(piece.get_rgb(4, 4)) == 0xFF)
   assert_true((piece.get_rgb(4, 4) & 0x00FFFFFF) == 0x336699)
-  // 背景在内部像素处被 6 邻域均值模糊：
-  // 全背景同色 → 均值仍为原色
-  assert_true((ori.get_rgb(9, 9) & 0x00FFFFFF) == 0x336699)
+  // 背景首个处理的内部像素 (8,8)（对应模板 (3,3)）：邻域尚为纯净均匀背景，
+  // "6 像素求和 / 8" 的模糊除法使其变暗（Java 怪癖）：0x33=51→38, 0x66=102→76, 0x99=153→114
+  // （后续像素因级联读到已模糊的邻域，不做精确断言）
+  assert_true((ori.get_rgb(8, 8) & 0x00FFFFFF) == ((38 << 16) | (76 << 8) | 114))
 }
 
 ///|
