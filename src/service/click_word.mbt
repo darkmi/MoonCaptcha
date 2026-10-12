@@ -92,23 +92,14 @@ pub fn generate_click_word_data(
   let han_zi_size = config.han_zi_size
   // 定义随机 1 到 arr.length 某一个字不参与校验
   let decoy_index = rng.random_range(1, word_count) - 1
-  let secret_key = if config.aes_enabled {
-    rng.random_string(16)
-  } else {
-    ""
-  }
+  let secret_key = if config.aes_enabled { rng.random_string(16) } else { "" }
   let words = random_words(rng, word_count)
   let chars : Array[ClickWordChar] = []
   let word_list : Array[String] = []
   let point_list : Array[@protocol.Point] = []
   for i, word in words {
     let point = random_word_point(
-      rng,
-      image_width,
-      image_height,
-      i,
-      word_count,
-      han_zi_size,
+      rng, image_width, image_height, i, word_count, han_zi_size,
     )
     // 随机颜色（RGB 各 [1,255]）与 ±45° 旋转，对齐 Java 绘制期随机
     let color = (255 << 24) |
@@ -116,14 +107,14 @@ pub fn generate_click_word_data(
       (rng.random_range(1, 256) << 8) |
       rng.random_range(1, 256)
     let rotation = rng.random_range(-45, 46)
-    chars.push({ word, x: point.x(), y: point.y(), color, rotation })
+    chars.push({ word, x: point.x(), y: point.y(), color, rotation, })
     if i != decoy_index {
       // 所有绘制点共用同一个 secretKey（对齐 Java 逐点 setSecretKey）
       word_list.push(word)
       point_list.push(@protocol.Point::make(point.x(), point.y(), secret_key))
     }
   }
-  { chars, word_list, point_list, secret_key }
+  { chars, word_list, point_list, secret_key, }
 }
 
 ///|
@@ -162,22 +153,41 @@ pub fn click_word_check(
   cache.delete(key)
   let expected = match @protocol.Point::parse_captcha_json_array(stored) {
     Ok(points) => points
-    Err(_) => return @protocol.ResponseModel::error_msg(Error, "验证码坐标解析失败")
+    Err(_) =>
+      return @protocol.ResponseModel::error_msg(
+        Error,
+        "验证码坐标解析失败",
+      )
   }
   if expected.length() == 0 {
-    return @protocol.ResponseModel::error_msg(Error, "验证码坐标解析失败")
+    return @protocol.ResponseModel::error_msg(
+      Error,
+      "验证码坐标解析失败",
+    )
   }
-  let user_json = match @crypto.aes_decrypt(point_json, expected[0].secret_key()) {
+  let user_json = match
+    @crypto.aes_decrypt(point_json, expected[0].secret_key()) {
     Some(s) => s
-    None => return @protocol.ResponseModel::error_msg(Error, "验证码坐标解析失败")
+    None =>
+      return @protocol.ResponseModel::error_msg(
+        Error,
+        "验证码坐标解析失败",
+      )
   }
   let clicked = match @protocol.Point::parse_captcha_json_array(user_json) {
     Ok(points) => points
-    Err(_) => return @protocol.ResponseModel::error_msg(Error, "验证码坐标解析失败")
+    Err(_) =>
+      return @protocol.ResponseModel::error_msg(
+        Error,
+        "验证码坐标解析失败",
+      )
   }
   // 对齐 Java：按服务端点数遍历，点击数不足按解析失败处理
   if clicked.length() < expected.length() {
-    return @protocol.ResponseModel::error_msg(Error, "验证码坐标解析失败")
+    return @protocol.ResponseModel::error_msg(
+      Error,
+      "验证码坐标解析失败",
+    )
   }
   let tolerance = config.han_zi_size
   for i, p in expected {

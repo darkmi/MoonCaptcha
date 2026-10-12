@@ -1,0 +1,19 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "mooncaptcha/mooncaptcha/examples/js-server/moon-srv"
+
+// Values
+pub fn js_captcha_check(String) -> String
+
+pub fn js_captcha_get(String) -> String
+
+pub fn js_captcha_init(String) -> String
+
+pub fn js_captcha_verify(String) -> String
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

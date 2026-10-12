@@ -8,7 +8,7 @@ pub struct Rng {
 
 ///|
 pub fn Rng::new(seed : UInt64) -> Rng {
-  { state: seed }
+  { state: seed, }
 }
 
 ///|
@@ -40,7 +40,7 @@ pub fn Rng::next_bounded(self : Rng, bound : Int) -> Int {
     abort("Rng::next_bounded: bound must be positive")
   }
   // 2^31 - 1 以下最大的、能被 bound 整除的数之上的拒绝线
-  let limit = 2147483647 - (2147483647 % bound)
+  let limit = 2147483647 - 2147483647 % bound
   let mut result = 0
   let mut found = false
   while !found {

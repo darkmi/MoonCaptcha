@@ -39,11 +39,25 @@ pub fn utf8_decode(bytes : FixedArray[Int]) -> String {
     } else if b >= 0xC2 && b < 0xE0 && i + 1 < n && is_cont(bytes[i + 1]) {
       cp = ((b & 0x1F) << 6) | (bytes[i + 1] & 0x3F)
       width = 2
-    } else if b >= 0xE0 && b < 0xF0 && i + 2 < n && is_cont(bytes[i + 1]) && is_cont(bytes[i + 2]) {
-      cp = ((b & 0x0F) << 12) | ((bytes[i + 1] & 0x3F) << 6) | (bytes[i + 2] & 0x3F)
+    } else if b >= 0xE0 &&
+      b < 0xF0 &&
+      i + 2 < n &&
+      is_cont(bytes[i + 1]) &&
+      is_cont(bytes[i + 2]) {
+      cp = ((b & 0x0F) << 12) |
+        ((bytes[i + 1] & 0x3F) << 6) |
+        (bytes[i + 2] & 0x3F)
       width = 3
-    } else if b >= 0xF0 && b < 0xF5 && i + 3 < n && is_cont(bytes[i + 1]) && is_cont(bytes[i + 2]) && is_cont(bytes[i + 3]) {
-      cp = ((b & 0x07) << 18) | ((bytes[i + 1] & 0x3F) << 12) | ((bytes[i + 2] & 0x3F) << 6) | (bytes[i + 3] & 0x3F)
+    } else if b >= 0xF0 &&
+      b < 0xF5 &&
+      i + 3 < n &&
+      is_cont(bytes[i + 1]) &&
+      is_cont(bytes[i + 2]) &&
+      is_cont(bytes[i + 3]) {
+      cp = ((b & 0x07) << 18) |
+        ((bytes[i + 1] & 0x3F) << 12) |
+        ((bytes[i + 2] & 0x3F) << 6) |
+        (bytes[i + 3] & 0x3F)
       width = 4
     } else {
       cp = 0xFFFD

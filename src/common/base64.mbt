@@ -1,7 +1,6 @@
 ///|
 /// 字节数组统一用 FixedArray[Int]（值域 0..255）表示，
 /// 与 Java getRGB/setRGB、AES 教材式实现保持一致的位运算心智模型。
-
 const B64_ALPHABET : String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
 ///|

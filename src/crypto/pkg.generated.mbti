@@ -1,0 +1,23 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "mooncaptcha/mooncaptcha/src/crypto"
+
+// Values
+pub fn aes128_ecb_decrypt(FixedArray[Int], FixedArray[Int]) -> FixedArray[Int]?
+
+pub fn aes128_ecb_encrypt(FixedArray[Int], FixedArray[Int]) -> FixedArray[Int]?
+
+pub fn aes_decrypt(String, String) -> String?
+
+pub fn aes_encrypt(String, String) -> String?
+
+pub fn pkcs7_pad(FixedArray[Int], Int) -> FixedArray[Int]
+
+pub fn pkcs7_unpad(FixedArray[Int], Int) -> FixedArray[Int]?
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

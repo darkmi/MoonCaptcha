@@ -9,12 +9,12 @@ pub struct ResponseModel {
 
 ///|
 pub fn ResponseModel::success() -> ResponseModel {
-  { rep_code: Success.code(), rep_msg: Success.message(), rep_data: None }
+  { rep_code: Success.code(), rep_msg: Success.message(), rep_data: None, }
 }
 
 ///|
 pub fn ResponseModel::success_msg(message : String) -> ResponseModel {
-  { rep_code: Success.code(), rep_msg: message, rep_data: None }
+  { rep_code: Success.code(), rep_msg: message, rep_data: None, }
 }
 
 ///|
@@ -28,7 +28,7 @@ pub fn ResponseModel::success_data(data_json : String) -> ResponseModel {
 
 ///|
 pub fn ResponseModel::error(code : RepCode) -> ResponseModel {
-  { rep_code: code.code(), rep_msg: code.message(), rep_data: None }
+  { rep_code: code.code(), rep_msg: code.message(), rep_data: None, }
 }
 
 ///|
@@ -36,7 +36,7 @@ pub fn ResponseModel::error_msg(
   code : RepCode,
   message : String,
 ) -> ResponseModel {
-  { rep_code: code.code(), rep_msg: message, rep_data: None }
+  { rep_code: code.code(), rep_msg: message, rep_data: None, }
 }
 
 ///|

@@ -15,7 +15,7 @@ priv struct BitReader {
 
 ///|
 fn BitReader::new(data : FixedArray[Int]) -> BitReader {
-  { data, byte_pos: 0, bit_buf: 0, bit_cnt: 0 }
+  { data, byte_pos: 0, bit_buf: 0, bit_cnt: 0, }
 }
 
 ///|
@@ -78,7 +78,7 @@ fn huffman_build(lengths : FixedArray[Int]) -> Result[HuffmanTable, String] {
       offsets[l] = offsets[l] + 1
     }
   }
-  Ok({ counts, symbols })
+  Ok({ counts, symbols, })
 }
 
 ///|
@@ -146,27 +146,27 @@ fn build_fixed_dist_table() -> HuffmanTable {
 ///|
 /// 长度符号 257..285 的基础长度（RFC 1951 §3.2.5）。
 let len_base : FixedArray[Int] = @common.fixed_from_array([
-  3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67,
-  83, 99, 115, 131, 163, 195, 227, 258,
+  3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83,
+  99, 115, 131, 163, 195, 227, 258,
 ])
 
 ///|
 let len_extra : FixedArray[Int] = @common.fixed_from_array([
-  0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5,
-  5, 5, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5,
+  5, 0,
 ])
 
 ///|
 /// 距离符号 0..29 的基础距离。
 let dist_base : FixedArray[Int] = @common.fixed_from_array([
-  1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513,
-  769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577,
+  1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513, 769,
+  1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577,
 ])
 
 ///|
 let dist_extra : FixedArray[Int] = @common.fixed_from_array([
-  0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11,
-  11, 12, 12, 13, 13,
+  0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
+  12, 12, 13, 13,
 ])
 
 ///|

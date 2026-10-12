@@ -1,3 +1,3 @@
 import {
-  "mooncaptcha/mooncaptcha/src/common"
+  "mooncaptcha/mooncaptcha/src/common",
 }

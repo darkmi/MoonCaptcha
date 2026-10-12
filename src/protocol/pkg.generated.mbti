@@ -1,0 +1,70 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "mooncaptcha/mooncaptcha/src/protocol"
+
+// Values
+pub fn check_success_data(String, String) -> String
+
+// Errors
+
+// Types and methods
+pub(all) struct GetResponse {
+  captcha_type : String
+  original_image_base64 : String
+  jigsaw_image_base64 : String
+  word_list : Array[String]?
+  token : String
+  secret_key : String
+}
+pub fn GetResponse::to_json(Self) -> String
+
+pub struct Point {
+  secret_key : String
+  x : Int
+  y : Int
+}
+pub fn Point::list_to_captcha_json(Array[Self]) -> String
+pub fn Point::make(Int, Int, String) -> Self
+pub fn Point::parse_captcha_json(String) -> Result[Self, String]
+pub fn Point::parse_captcha_json_array(String) -> Result[Array[Self], String]
+pub fn Point::secret_key(Self) -> String
+pub fn Point::to_captcha_json(Self) -> String
+pub fn Point::x(Self) -> Int
+pub fn Point::y(Self) -> Int
+
+pub(all) enum RepCode {
+  Success
+  Error
+  Exception
+  BlankError
+  ApiCaptchaInvalid
+  ApiCaptchaCoordinateError
+  ApiCaptchaError
+  ApiCaptchaBasemapNull
+  ApiReqLimitGetError
+  ApiReqLockGetError
+  ApiReqLimitCheckError
+  ApiReqLimitVerifyError
+  ApiReqInvalid
+}
+pub fn RepCode::code(Self) -> String
+pub fn RepCode::is_success(Self) -> Bool
+pub fn RepCode::message(Self) -> String
+
+pub struct ResponseModel {
+  rep_code : String
+  rep_msg : String
+  rep_data : String?
+}
+pub fn ResponseModel::blank_error(String) -> Self
+pub fn ResponseModel::error(RepCode) -> Self
+pub fn ResponseModel::error_msg(RepCode, String) -> Self
+pub fn ResponseModel::is_success(Self) -> Bool
+pub fn ResponseModel::rep_code(Self) -> String
+pub fn ResponseModel::success() -> Self
+pub fn ResponseModel::success_data(String) -> Self
+pub fn ResponseModel::success_msg(String) -> Self
+pub fn ResponseModel::to_json(Self) -> String
+
+// Type aliases
+
+// Traits

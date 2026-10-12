@@ -1,0 +1,30 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "mooncaptcha/mooncaptcha/src/cache"
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct MemoryCache {
+  data : Map[String, String]
+  expiry : Map[String, Int64]
+  now_ms : () -> Int64
+  max_entries : Int
+}
+pub fn MemoryCache::delete(Self, String) -> Unit
+pub fn MemoryCache::exists(Self, String) -> Bool
+pub fn MemoryCache::get(Self, String) -> String?
+pub fn MemoryCache::new(() -> Int64, max_entries? : Int) -> Self
+pub fn MemoryCache::set(Self, String, String, Int64) -> Unit
+pub impl Cache for MemoryCache
+
+// Type aliases
+
+// Traits
+pub trait Cache {
+  fn set(Self, String, String, Int64) -> Unit
+  fn get(Self, String) -> String?
+  fn exists(Self, String) -> Bool
+  fn delete(Self, String) -> Unit
+}

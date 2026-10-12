@@ -12,7 +12,7 @@ priv struct FPoint {
 
 ///|
 fn fpoint(x : Double, y : Double) -> FPoint {
-  { x, y }
+  { x, y, }
 }
 
 ///|
@@ -49,7 +49,7 @@ fn flatten_quad(
   p1 : FPoint,
 ) -> Unit {
   let steps = 6
-  for s in 1..=steps {
+  for s in 1..<=steps {
     let t = s.to_double() / steps.to_double()
     let mt = 1.0 - t
     let x = mt * mt * p0.x + 2.0 * mt * t * ctrl.x + t * t * p1.x
@@ -93,7 +93,7 @@ fn Font::glyph_polygons(
     let pts = outline.points
     // 起点定位：第一个 on-curve 点；全部 off-curve 时取前两点中点
     let mut start_idx = -1
-    for i in start..=end {
+    for i in start..<=end {
       if pts[i].on_curve {
         start_idx = i
         break
@@ -134,7 +134,7 @@ fn walk_contour(
   let mut idx = first_i
   let mut count = 1
   while count <= n {
-    let i = start + ((idx - start) % n)
+    let i = start + (idx - start) % n
     let p = pts[i]
     if p.on_curve {
       let v = transform(p.x, p.y)
@@ -145,7 +145,7 @@ fn walk_contour(
     } else {
       // 控制点
       let ctrl = transform(p.x, p.y)
-      let next_i = start + ((idx + 1 - start) % n)
+      let next_i = start + (idx + 1 - start) % n
       let q = pts[next_i]
       if q.on_curve {
         let v = transform(q.x, q.y)
@@ -239,7 +239,7 @@ fn paint_polygons(
   let y0 = if (min_y - 1.0).to_int() > 0 { (min_y - 1.0).to_int() } else { 0 }
   let y1 = if (max_y + 1.0).to_int() < buf.height {
     (max_y + 1.0).to_int()
-    } else {
+  } else {
     buf.height
   }
   for py in y0..<y1 {
@@ -257,10 +257,13 @@ fn paint_polygons(
       if cov > 0 {
         let c = cov.to_double() / 16.0
         let bg = buf.get_rgb(px, py)
-        let nr = (((bg >> 16) & 0xFF).to_double() * (1.0 - c) + fr * c).to_int() & 0xFF
-        let ng = (((bg >> 8) & 0xFF).to_double() * (1.0 - c) + fg * c).to_int() & 0xFF
+        let nr = (((bg >> 16) & 0xFF).to_double() * (1.0 - c) + fr * c).to_int() &
+          0xFF
+        let ng = (((bg >> 8) & 0xFF).to_double() * (1.0 - c) + fg * c).to_int() &
+          0xFF
         let nb = ((bg & 0xFF).to_double() * (1.0 - c) + fb * c).to_int() & 0xFF
-        let na = (((bg >> 24) & 0xFF).to_double() * (1.0 - c) + 255.0 * c).to_int() & 0xFF
+        let na = (((bg >> 24) & 0xFF).to_double() * (1.0 - c) + 255.0 * c).to_int() &
+          0xFF
         buf.set_rgb(px, py, (na << 24) | (nr << 16) | (ng << 8) | nb)
       }
     }
@@ -327,7 +330,7 @@ pub fn estimate_text_width(text : String, han_zi_size : Int) -> Int {
       en_cnt = en_cnt + 1
     }
   }
-  (han_zi_size / 2) * ch_cnt + 5 + en_cnt * 8
+  han_zi_size / 2 * ch_cnt + 5 + en_cnt * 8
 }
 
 ///|

@@ -69,7 +69,7 @@ test "png encode decode roundtrip" {
       rgba[(y * w + x) * 4 + 3] = if (x + y) % 3 == 0 { 0 } else { 255 }
     }
   }
-  let img : PngImage = { width: w, height: h, rgba }
+  let img : PngImage = { width: w, height: h, rgba, }
   let bytes = encode_png(img)
   match decode_png(bytes) {
     Ok(back) => {

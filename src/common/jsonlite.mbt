@@ -17,7 +17,7 @@ pub(all) enum Value {
 /// 解析失败时返回 Err(描述)。
 pub fn parse_json(input : String) -> Result[Value, String] {
   let src = input.to_array()
-  let parser = { src, pos: 0 }
+  let parser = { src, pos: 0, }
   parser.skip_ws()
   let value = parser.parse_value()
   match value {
@@ -38,6 +38,7 @@ priv struct Parser {
   src : Array[Char]
   mut pos : Int
 }
+
 ///|
 fn Parser::skip_ws(self : Parser) -> Unit {
   while self.pos < self.src.length() {
@@ -65,22 +66,20 @@ fn Parser::parse_value(self : Parser) -> Result[Value, String] {
     None => Err("unexpected end of input")
     Some('{') => self.parse_object()
     Some('[') => self.parse_array()
-    Some('"') => {
+    Some('"') =>
       match self.parse_string() {
         Ok(s) => Ok(JString(s))
         Err(e) => Err(e)
       }
-    }
     Some('t') => self.parse_literal("true", JBool(true))
     Some('f') => self.parse_literal("false", JBool(false))
     Some('n') => self.parse_literal("null", JNull)
-    Some(c) => {
+    Some(c) =>
       if c == '-' || (c >= '0' && c <= '9') {
         self.parse_number()
       } else {
         Err("unexpected character '\{c}' at offset \{self.pos}")
       }
-    }
   }
 }
 
@@ -225,13 +224,17 @@ fn Parser::parse_string(self : Parser) -> Result[String, String] {
           }
           if unit >= 0xD800 && unit <= 0xDBFF {
             // 高代理：尝试与后续 DC00-DFFF 合并成完整码点；无法合并则回退 U+FFFD
-            if self.pos + 1 < self.src.length() && self.src[self.pos].to_int() == 92 && self.src[self.pos + 1].to_int() == 117 {
+            if self.pos + 1 < self.src.length() &&
+              self.src[self.pos].to_int() == 92 &&
+              self.src[self.pos + 1].to_int() == 117 {
               let save = self.pos
               self.pos = self.pos + 2
               match self.parse_hex4() {
                 Ok(low) =>
                   if low >= 0xDC00 && low <= 0xDFFF {
-                    let combined = 0x10000 + ((unit - 0xD800) << 10) + (low - 0xDC00)
+                    let combined = 0x10000 +
+                      ((unit - 0xD800) << 10) +
+                      (low - 0xDC00)
                     write_code_point(buf, combined)
                   } else {
                     write_code_point(buf, unit)
@@ -296,21 +299,29 @@ fn Parser::parse_number(self : Parser) -> Result[Value, String] {
   if self.peek() is Some('-') {
     self.pos = self.pos + 1
   }
-  while self.pos < self.src.length() && self.src[self.pos] >= '0' && self.src[self.pos] <= '9' {
+  while self.pos < self.src.length() &&
+        self.src[self.pos] >= '0' &&
+        self.src[self.pos] <= '9' {
     self.pos = self.pos + 1
   }
   if self.pos < self.src.length() && self.src[self.pos] == '.' {
     self.pos = self.pos + 1
-    while self.pos < self.src.length() && self.src[self.pos] >= '0' && self.src[self.pos] <= '9' {
+    while self.pos < self.src.length() &&
+          self.src[self.pos] >= '0' &&
+          self.src[self.pos] <= '9' {
       self.pos = self.pos + 1
     }
   }
-  if self.pos < self.src.length() && (self.src[self.pos] == 'e' || self.src[self.pos] == 'E') {
+  if self.pos < self.src.length() &&
+    (self.src[self.pos] == 'e' || self.src[self.pos] == 'E') {
     self.pos = self.pos + 1
-    if self.pos < self.src.length() && (self.src[self.pos] == '+' || self.src[self.pos] == '-') {
+    if self.pos < self.src.length() &&
+      (self.src[self.pos] == '+' || self.src[self.pos] == '-') {
       self.pos = self.pos + 1
     }
-    while self.pos < self.src.length() && self.src[self.pos] >= '0' && self.src[self.pos] <= '9' {
+    while self.pos < self.src.length() &&
+          self.src[self.pos] >= '0' &&
+          self.src[self.pos] <= '9' {
       self.pos = self.pos + 1
     }
   }
@@ -398,7 +409,7 @@ pub fn parse_double(text : String) -> Double? {
       value = value * 10.0
     }
   } else if exponent < 0 {
-    for _k in 0..<(-exponent) {
+    for _k in 0..<-exponent {
       value = value / 10.0
     }
   }

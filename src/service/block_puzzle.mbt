@@ -18,11 +18,7 @@ pub fn generate_jigsaw_point(
   jigsaw_height : Int,
   aes_enabled : Bool,
 ) -> @protocol.Point {
-  let secret_key = if aes_enabled {
-    rng.random_string(16)
-  } else {
-    ""
-  }
+  let secret_key = if aes_enabled { rng.random_string(16) } else { "" }
   let x = if width - jigsaw_width <= 0 {
     5
   } else {
@@ -49,7 +45,11 @@ pub fn block_puzzle_store(
   token : String,
   point : @protocol.Point,
 ) -> Unit {
-  cache.set(captcha_key(token), point.to_captcha_json(), config.expires_in_seconds)
+  cache.set(
+    captcha_key(token),
+    point.to_captcha_json(),
+    config.expires_in_seconds,
+  )
 }
 
 ///|
@@ -73,15 +73,27 @@ pub fn block_puzzle_check(
   cache.delete(key)
   let point = match @protocol.Point::parse_captcha_json(stored) {
     Ok(p) => p
-    Err(_) => return @protocol.ResponseModel::error_msg(Error, "验证码坐标解析失败")
+    Err(_) =>
+      return @protocol.ResponseModel::error_msg(
+        Error,
+        "验证码坐标解析失败",
+      )
   }
   let user_json = match @crypto.aes_decrypt(point_json, point.secret_key()) {
     Some(s) => s
-    None => return @protocol.ResponseModel::error_msg(Error, "验证码坐标解析失败")
+    None =>
+      return @protocol.ResponseModel::error_msg(
+        Error,
+        "验证码坐标解析失败",
+      )
   }
   let user_point = match @protocol.Point::parse_captcha_json(user_json) {
     Ok(p) => p
-    Err(_) => return @protocol.ResponseModel::error_msg(Error, "验证码坐标解析失败")
+    Err(_) =>
+      return @protocol.ResponseModel::error_msg(
+        Error,
+        "验证码坐标解析失败",
+      )
   }
   let offset = config.slip_offset
   if point.x() - offset > user_point.x() ||
@@ -110,7 +122,8 @@ fn store_second_verification(
   secret_key : String,
   captcha_type : String,
 ) -> @protocol.ResponseModel {
-  let verification = match @crypto.aes_encrypt(token + "---" + point_json, secret_key) {
+  let verification = match
+    @crypto.aes_encrypt(token + "---" + point_json, secret_key) {
     Some(v) => v
     None => return @protocol.ResponseModel::error_msg(Error, "AES加密失败")
   }
@@ -119,7 +132,9 @@ fn store_second_verification(
     token,
     config.second_expires_in_seconds,
   )
-  @protocol.ResponseModel::success_data(@protocol.check_success_data(captcha_type, token))
+  @protocol.ResponseModel::success_data(
+    @protocol.check_success_data(captcha_type, token),
+  )
 }
 
 ///|

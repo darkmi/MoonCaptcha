@@ -9,24 +9,12 @@ pub(all) struct PixelBuffer {
 
 ///|
 pub fn PixelBuffer::new(width : Int, height : Int) -> PixelBuffer {
-  {
-    width,
-    height,
-    pixels: FixedArray::make(width * height, 0),
-  }
+  { width, height, pixels: FixedArray::make(width * height, 0), }
 }
 
 ///|
-pub fn PixelBuffer::make(
-  width : Int,
-  height : Int,
-  color : Int,
-) -> PixelBuffer {
-  {
-    width,
-    height,
-    pixels: FixedArray::make(width * height, color),
-  }
+pub fn PixelBuffer::make(width : Int, height : Int, color : Int) -> PixelBuffer {
+  { width, height, pixels: FixedArray::make(width * height, color), }
 }
 
 ///|
@@ -40,7 +28,12 @@ pub fn PixelBuffer::get_rgb(self : PixelBuffer, x : Int, y : Int) -> Int {
 
 ///|
 /// 写入像素；越界静默忽略。
-pub fn PixelBuffer::set_rgb(self : PixelBuffer, x : Int, y : Int, argb : Int) -> Unit {
+pub fn PixelBuffer::set_rgb(
+  self : PixelBuffer,
+  x : Int,
+  y : Int,
+  argb : Int,
+) -> Unit {
   if x < 0 || y < 0 || x >= self.width || y >= self.height {
     return
   }

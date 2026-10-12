@@ -10,7 +10,7 @@ pub struct Point {
 
 ///|
 pub fn Point::make(x : Int, y : Int, secret_key : String) -> Point {
-  { secret_key, x, y }
+  { secret_key, x, y, }
 }
 
 ///|

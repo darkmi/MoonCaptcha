@@ -49,10 +49,7 @@ pub fn GetResponse::to_json(self : GetResponse) -> String {
 
 ///|
 /// check 成功时的 repData（对齐 Java 返回的 captchaVO 片段）。
-pub fn check_success_data(
-  captcha_type : String,
-  token : String,
-) -> String {
+pub fn check_success_data(captcha_type : String, token : String) -> String {
   let buf = StringBuilder()
   buf.write_string("{\"captchaType\":")
   buf.write_string(@common.json_escape_string(captcha_type))

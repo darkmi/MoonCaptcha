@@ -6,7 +6,7 @@ priv struct FakeClock {
 
 ///|
 fn FakeClock::new() -> FakeClock {
-  { now: 1_000_000L }
+  { now: 1_000_000L, }
 }
 
 ///|

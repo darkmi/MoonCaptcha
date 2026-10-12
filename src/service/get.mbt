@@ -43,8 +43,12 @@ pub fn get_block_puzzle(
   block_puzzle_store(config, cache, token, point)
   Ok({
     captcha_type: "blockPuzzle",
-    original_image_base64: @common.base64_encode(@image.encode_png(bg.to_png_image())),
-    jigsaw_image_base64: @common.base64_encode(@image.encode_png(piece.to_png_image())),
+    original_image_base64: @common.base64_encode(
+      @image.encode_png(bg.to_png_image()),
+    ),
+    jigsaw_image_base64: @common.base64_encode(
+      @image.encode_png(piece.to_png_image()),
+    ),
     word_list: None,
     token,
     secret_key: point.secret_key(),
@@ -90,7 +94,9 @@ pub fn get_click_word(
   click_word_store(config, cache, token, data.point_list)
   Ok({
     captcha_type: "clickWord",
-    original_image_base64: @common.base64_encode(@image.encode_png(buf.to_png_image())),
+    original_image_base64: @common.base64_encode(
+      @image.encode_png(buf.to_png_image()),
+    ),
     jigsaw_image_base64: "",
     word_list: Some(data.word_list),
     token,

@@ -35,9 +35,15 @@ test "pixel buffer get set" {
 ///|
 test "blend_with_white known values" {
   // alpha=0 → 原色
-  assert_true(@image.blend_with_white((0xFF << 24) | 0x336699, 0) == ((0xFF << 24) | 0x336699))
+  assert_true(
+    @image.blend_with_white((0xFF << 24) | 0x336699, 0) ==
+    ((0xFF << 24) | 0x336699),
+  )
   // alpha=255 → 纯白
-  assert_true(@image.blend_with_white((0xFF << 24) | 0x336699, 255) == ((0xFF << 24) | 0xFFFFFF))
+  assert_true(
+    @image.blend_with_white((0xFF << 24) | 0x336699, 255) ==
+    ((0xFF << 24) | 0xFFFFFF),
+  )
   // alpha=128 → 中间值：r = 0x33*(127/255) + 255*(128/255) ≈ 153
   let blended = @image.blend_with_white((0xFF << 24) | 0x336699, 128)
   assert_true(@image.alpha_of(blended) == 0xFF)
@@ -64,7 +70,9 @@ test "cut_by_template interior copies background with blur" {
   // 背景首个处理的内部像素 (8,8)（对应模板 (3,3)）：邻域尚为纯净均匀背景，
   // "6 像素求和 / 8" 的模糊除法使其变暗（Java 怪癖）：0x33=51→38, 0x66=102→76, 0x99=153→114
   // （后续像素因级联读到已模糊的邻域，不做精确断言）
-  assert_true((ori.get_rgb(8, 8) & 0x00FFFFFF) == ((38 << 16) | (76 << 8) | 114))
+  assert_true(
+    (ori.get_rgb(8, 8) & 0x00FFFFFF) == ((38 << 16) | (76 << 8) | 114),
+  )
 }
 
 ///|

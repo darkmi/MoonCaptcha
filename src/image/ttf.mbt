@@ -50,7 +50,10 @@ fn read_i16(data : FixedArray[Int], off : Int) -> Int {
 
 ///|
 fn read_u32(data : FixedArray[Int], off : Int) -> Int {
-  (data[off] << 24) | (data[off + 1] << 16) | (data[off + 2] << 8) | data[off + 3]
+  (data[off] << 24) |
+  (data[off + 1] << 16) |
+  (data[off + 2] << 8) |
+  data[off + 3]
 }
 
 ///|
@@ -96,7 +99,13 @@ pub fn Font::parse(bytes : FixedArray[Int]) -> Result[Font, String] {
     }
     i = i + 1
   }
-  if head_off < 0 || maxp_off < 0 || hhea_off < 0 || cmap_off < 0 || loca_off < 0 || glyf_off < 0 || hmtx_off < 0 {
+  if head_off < 0 ||
+    maxp_off < 0 ||
+    hhea_off < 0 ||
+    cmap_off < 0 ||
+    loca_off < 0 ||
+    glyf_off < 0 ||
+    hmtx_off < 0 {
     return Err("missing required table")
   }
   if head_off + 54 > bytes.length() {
@@ -237,7 +246,10 @@ fn Font::loca_entry(self : Font, gid : Int) -> Int {
 
 ///|
 /// 解析字形轮廓（复合字形递归展开，深度限 4）。
-pub fn Font::glyph_outline(self : Font, gid : Int) -> Result[GlyphOutline, String] {
+pub fn Font::glyph_outline(
+  self : Font,
+  gid : Int,
+) -> Result[GlyphOutline, String] {
   self.glyph_outline_inner(gid, 0)
 }
 
@@ -257,7 +269,7 @@ fn Font::glyph_outline_inner(
   let start = self.loca_entry(gid)
   let end = self.loca_entry(gid + 1)
   if end <= start {
-    return Ok({ points: [], contour_ends: [], advance })
+    return Ok({ points: [], contour_ends: [], advance, })
   }
   let g = self.glyf_off + start
   if g + 10 > self.data.length() {
@@ -347,13 +359,13 @@ fn Font::parse_simple_glyph(
   }
   let points : Array[GlyphPoint] = []
   for i in 0..<n {
-    points.push({ x: xs[i], y: ys[i], on_curve: (flags[i] & 0x01) != 0 })
+    points.push({ x: xs[i], y: ys[i], on_curve: (flags[i] & 0x01) != 0, })
   }
   let contour_ends : Array[Int] = []
   for c in 0..<num_contours {
     contour_ends.push(read_u16(data, g + 10 + c * 2))
   }
-  Ok({ points, contour_ends, advance })
+  Ok({ points, contour_ends, advance, })
 }
 
 ///|
@@ -381,7 +393,11 @@ fn Font::parse_composite_glyph(
     if p + arg_size > data.length() {
       return Err("truncated composite args")
     }
-    let dx = if words { read_i16(data, p) } else { data[p] | ((data[p] & 0x80) * 0xFE) }
+    let dx = if words {
+      read_i16(data, p)
+    } else {
+      data[p] | ((data[p] & 0x80) * 0xFE)
+    }
     let dy = if words {
       read_i16(data, p + 2)
     } else {
@@ -422,12 +438,12 @@ fn Font::parse_composite_glyph(
     for pt in child.points {
       let nx = dx + (a * pt.x + b * pt.y) / 16384
       let ny = dy + (c * pt.x + d * pt.y) / 16384
-      points.push({ x: nx, y: ny, on_curve: pt.on_curve })
+      points.push({ x: nx, y: ny, on_curve: pt.on_curve, })
     }
     for e in child.contour_ends {
       contour_ends.push(e + base)
     }
     more = (flags & 0x0020) != 0
   }
-  Ok({ points, contour_ends, advance })
+  Ok({ points, contour_ends, advance, })
 }

@@ -15,11 +15,8 @@ test "key expansion fips197 c1" {
   for i in 0..<16 {
     let hi = key_hex[i * 2].to_int() - 48
     let lo = key_hex[i * 2 + 1].to_int() - 48
-    key[i] = (if hi > 9 { hi - 39 } else { hi }) * 16 + (if lo > 9 {
-      lo - 39
-    } else {
-      lo
-    })
+    key[i] = (if hi > 9 { hi - 39 } else { hi }) * 16 +
+      (if lo > 9 { lo - 39 } else { lo })
   }
   let w = expand_key(key)
   let expected = "a0fafe1788542cb123a339392a6c7605"
@@ -44,11 +41,8 @@ test "aes128 fips197 decrypt block" {
     for i in 0..<out.length() {
       let hi = chars[i * 2].to_int() - 48
       let lo = chars[i * 2 + 1].to_int() - 48
-      out[i] = (if hi > 9 { hi - 39 } else { hi }) * 16 + (if lo > 9 {
-        lo - 39
-      } else {
-        lo
-      })
+      out[i] = (if hi > 9 { hi - 39 } else { hi }) * 16 +
+        (if lo > 9 { lo - 39 } else { lo })
     }
     out
   }

@@ -13,7 +13,7 @@ fn make_gradient_bg(w : Int, h : Int, seed : Int) -> @image.PngImage {
       rgba[i + 3] = 255
     }
   }
-  { width: w, height: h, rgba }
+  { width: w, height: h, rgba, }
 }
 
 ///|
@@ -28,10 +28,14 @@ fn make_slider_template() -> @image.PngImage {
       rgba[i] = 255
       rgba[i + 1] = 255
       rgba[i + 2] = 255
-      rgba[i + 3] = if y < 23 || y >= 77 || x < 23 || x >= 67 { 100 } else { 255 }
+      rgba[i + 3] = if y < 23 || y >= 77 || x < 23 || x >= 67 {
+        100
+      } else {
+        255
+      }
     }
   }
-  { width: w, height: h, rgba }
+  { width: w, height: h, rgba, }
 }
 
 ///|
@@ -80,10 +84,12 @@ test "get_block_puzzle produces decodable images with correct dims" {
               let mut opaque_cnt = 0
               let mut semi = 0
               for i in 0..<(img.width * img.height) {
-                let a = @image.alpha_of(@image.PixelBuffer::from_png_image(img).get_rgb(
-                  i % img.width,
-                  i / img.width,
-                ))
+                let a = @image.alpha_of(
+                  @image.PixelBuffer::from_png_image(img).get_rgb(
+                    i % img.width,
+                    i / img.width,
+                  ),
+                )
                 if a == 255 {
                   opaque_cnt = opaque_cnt + 1
                 } else if a > 0 {
@@ -114,7 +120,8 @@ test "get then check then verify full chain" {
   let cache = make_service_cache(clock)
   let config = @service.CaptchaConfig::default()
   let rng = @common.Rng::new(123UL)
-  let resp = match @service.get_block_puzzle(config, rng, make_pool(), cache, None) {
+  let resp = match
+    @service.get_block_puzzle(config, rng, make_pool(), cache, None) {
     Ok(r) => r
     Err(e) => {
       println(e)
@@ -143,13 +150,21 @@ test "get then check then verify full chain" {
     Some(v) => v
     None => abort("unreachable")
   }
-  let check_resp = @service.block_puzzle_check(config, cache, resp.token, point_json)
+  let check_resp = @service.block_puzzle_check(
+    config,
+    cache,
+    resp.token,
+    point_json,
+  )
   assert_true(check_resp.is_success())
-  let verification = match @crypto.aes_encrypt(resp.token + "---" + raw, resp.secret_key) {
+  let verification = match
+    @crypto.aes_encrypt(resp.token + "---" + raw, resp.secret_key) {
     Some(v) => v
     None => abort("unreachable")
   }
-  assert_true(@service.block_puzzle_verification(config, cache, verification).is_success())
+  assert_true(
+    @service.block_puzzle_verification(config, cache, verification).is_success(),
+  )
 }
 
 ///|
@@ -188,7 +203,8 @@ test "get_block_puzzle fails on empty pool" {
   let cache = make_service_cache(clock)
   let config = @service.CaptchaConfig::default()
   let rng = @common.Rng::new(3UL)
-  match @service.get_block_puzzle(config, rng, @image.ImagePool::new(), cache, None) {
+  match
+    @service.get_block_puzzle(config, rng, @image.ImagePool::new(), cache, None) {
     Ok(_) => assert_true(false)
     Err(e) => assert_true(e.length() > 0)
   }

@@ -69,7 +69,10 @@ fn build_inv_sbox() -> FixedArray[Int] {
 fn expand_key(key : FixedArray[Int]) -> FixedArray[Int] {
   let w : FixedArray[Int] = FixedArray::make(44, 0)
   for i in 0..<4 {
-    w[i] = (key[4 * i] << 24) | (key[4 * i + 1] << 16) | (key[4 * i + 2] << 8) | key[4 * i + 3]
+    w[i] = (key[4 * i] << 24) |
+      (key[4 * i + 1] << 16) |
+      (key[4 * i + 2] << 8) |
+      key[4 * i + 3]
   }
   // 轮常量：rcon[i] = xtime^{i-1}(1)
   let mut rc = 1
@@ -112,7 +115,11 @@ fn rot_word(word : Int) -> Int {
 
 ///|
 /// state 布局：state[4c + r] 为第 c 列第 r 行（与 AES 输入列填充顺序一致）。
-fn add_round_key(state : FixedArray[Int], w : FixedArray[Int], round : Int) -> Unit {
+fn add_round_key(
+  state : FixedArray[Int],
+  w : FixedArray[Int],
+  round : Int,
+) -> Unit {
   for c in 0..<4 {
     let word = w[round * 4 + c]
     state[4 * c] = state[4 * c] ^ ((word >> 24) & 0xFF)
@@ -142,11 +149,7 @@ fn shift_rows(state : FixedArray[Int], inv : Bool) -> Unit {
     }
     for c in 0..<4 {
       // 加密：行 r 左移 r（new[c] = old[(c+r)%4]）；解密反向
-      let src = if inv {
-        (c - r + 4) % 4
-      } else {
-        (c + r) % 4
-      }
+      let src = if inv { (c - r + 4) % 4 } else { (c + r) % 4 }
       state[4 * c + r] = row[src]
     }
   }
@@ -277,7 +280,7 @@ pub fn aes128_ecb_decrypt(
 
 ///|
 pub fn pkcs7_pad(data : FixedArray[Int], block_size : Int) -> FixedArray[Int] {
-  let pad_len = block_size - (data.length() % block_size)
+  let pad_len = block_size - data.length() % block_size
   let out : FixedArray[Int] = FixedArray::make(data.length() + pad_len, pad_len)
   for i in 0..<data.length() {
     out[i] = data[i]

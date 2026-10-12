@@ -3,13 +3,13 @@
 /// 单机用 MemoryCache；分布式部署由集成层提供实现（如 Redis）。
 pub trait Cache {
   /// 写入缓存；expires_in_seconds <= 0 表示不过期。
-  set(Self, key : String, value : String, expires_in_seconds : Int64) -> Unit
+  fn set(Self, key : String, value : String, expires_in_seconds : Int64) -> Unit
   /// 读取缓存；键不存在或已过期返回 None（读时惰性淘汰）。
-  get(Self, key : String) -> String?
+  fn get(Self, key : String) -> String?
   /// 键是否存在且未过期。
-  exists(Self, key : String) -> Bool
+  fn exists(Self, key : String) -> Bool
   /// 删除键。
-  delete(Self, key : String) -> Unit
+  fn delete(Self, key : String) -> Unit
 }
 
 ///|
@@ -32,12 +32,7 @@ pub fn MemoryCache::new(
   now_ms : () -> Int64,
   max_entries? : Int = 1000,
 ) -> MemoryCache {
-  {
-    data: Map([]),
-    expiry: Map([]),
-    now_ms,
-    max_entries,
-  }
+  { data: Map([]), expiry: Map([]), now_ms, max_entries, }
 }
 
 ///|
@@ -58,12 +53,7 @@ fn MemoryCache::expired(self : MemoryCache, key : String) -> Bool {
 }
 
 ///|
-pub impl Cache for MemoryCache with set(
-  self,
-  key,
-  value,
-  expires_in_seconds,
-) {
+pub impl Cache for MemoryCache with fn set(self, key, value, expires_in_seconds) {
   self.evict_if_full()
   self.data.set(key, value)
   if expires_in_seconds > 0L {
@@ -74,7 +64,7 @@ pub impl Cache for MemoryCache with set(
 }
 
 ///|
-pub impl Cache for MemoryCache with get(self, key) {
+pub impl Cache for MemoryCache with fn get(self, key) {
   if self.expired(key) {
     // 读时惰性淘汰
     self.data.remove(key)
@@ -85,12 +75,12 @@ pub impl Cache for MemoryCache with get(self, key) {
 }
 
 ///|
-pub impl Cache for MemoryCache with exists(self, key) {
+pub impl Cache for MemoryCache with fn exists(self, key) {
   Cache::get(self, key) is Some(_)
 }
 
 ///|
-pub impl Cache for MemoryCache with delete(self, key) {
+pub impl Cache for MemoryCache with fn delete(self, key) {
   self.data.remove(key)
   self.expiry.remove(key)
 }

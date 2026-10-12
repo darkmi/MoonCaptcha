@@ -3,5 +3,5 @@ import {
   "mooncaptcha/mooncaptcha/src/common",
   "mooncaptcha/mooncaptcha/src/crypto",
   "mooncaptcha/mooncaptcha/src/image",
-  "mooncaptcha/mooncaptcha/src/protocol"
+  "mooncaptcha/mooncaptcha/src/protocol",
 }

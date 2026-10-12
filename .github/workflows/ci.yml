@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 三目标验证：库的核心承诺是"编译到 WASM/JS/Native"
+        target: [wasm, js, native]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install MoonBit toolchain
+        run: curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+
+      - name: Add moon to PATH
+        run: echo "$HOME/.moon/bin" >> $GITHUB_PATH
+
+      - name: Bundle core standard library for target
+        run: cd "$HOME/.moon/lib/core" && moon bundle --target ${{ matrix.target }}
+
+      - name: Check
+        run: moon check --target ${{ matrix.target }}
+
+      - name: Test
+        run: moon test --target ${{ matrix.target }}
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install MoonBit toolchain
+        run: curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+
+      - name: Add moon to PATH
+        run: echo "$HOME/.moon/bin" >> $GITHUB_PATH
+
+      - name: Format check
+        run: |
+          moon fmt
+          git diff --exit-code
+
+      - name: Interface drift check (.mbti)
+        run: |
+          moon info
+          git diff --exit-code -- '*.mbti'

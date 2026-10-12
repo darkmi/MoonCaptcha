@@ -17,7 +17,8 @@ test "rate limit get exceeds per-minute cap" {
   }
   // 第 121 次 → 6201
   assert_true(
-    @service.rate_limit_get(limits, cache, "client-a") is Some(@protocol.ApiReqLimitGetError),
+    @service.rate_limit_get(limits, cache, "client-a")
+    is Some(@protocol.ApiReqLimitGetError),
   )
   // 不同 client 互不影响
   assert_true(@service.rate_limit_get(limits, cache, "client-b") is None)
@@ -52,10 +53,12 @@ test "rate limit check and verify caps" {
     let _ = @service.rate_limit_verify(limits, cache, "c1")
   }
   assert_true(
-    @service.rate_limit_check(limits, cache, "c1") is Some(@protocol.ApiReqLimitCheckError),
+    @service.rate_limit_check(limits, cache, "c1")
+    is Some(@protocol.ApiReqLimitCheckError),
   )
   assert_true(
-    @service.rate_limit_verify(limits, cache, "c1") is Some(@protocol.ApiReqLimitVerifyError),
+    @service.rate_limit_verify(limits, cache, "c1")
+    is Some(@protocol.ApiReqLimitVerifyError),
   )
 }
 
@@ -72,7 +75,8 @@ test "rate limit fail lock and expiry" {
   // 第 6 次失败 → 超阈值 → get 锁定
   @service.rate_limit_record_fail(limits, cache, "attacker")
   assert_true(
-    @service.rate_limit_get(limits, cache, "attacker") is Some(@protocol.ApiReqLockGetError),
+    @service.rate_limit_get(limits, cache, "attacker")
+    is Some(@protocol.ApiReqLockGetError),
   )
   // 锁定 300 秒内持续拒绝
   clock.advance(299L)
@@ -91,7 +95,8 @@ test "facade full chain with rate limiting" {
     @common.Rng::new(77UL),
   )
   // get：确定性种子下可重复生成
-  let resp = match service.get(cache, @service.BlockPuzzle, client_id="user-1") {
+  let resp = match
+    service.get(cache, @service.BlockPuzzle, client_id="user-1") {
     Ok(r) => r
     Err(e) => {
       println(e.message())
@@ -119,19 +124,24 @@ test "facade full chain with rate limiting" {
     @service.BlockPuzzle,
     client_id="user-1",
     token=resp.token,
-    point_json=point_json,
+    point_json~,
   )
   assert_true(check_resp.is_success())
-  let verification = match @crypto.aes_encrypt(resp.token + "---" + raw, resp.secret_key) {
+  let verification = match
+    @crypto.aes_encrypt(resp.token + "---" + raw, resp.secret_key) {
     Some(v) => v
     None => abort("unreachable")
   }
   assert_true(
-    service.verify(cache, client_id="user-1", captcha_verification=verification).is_success(),
+    service
+    .verify(cache, client_id="user-1", captcha_verification=verification)
+    .is_success(),
   )
   // 防重放
   assert_true(
-    !service.verify(cache, client_id="user-1", captcha_verification=verification).is_success(),
+    !service
+    .verify(cache, client_id="user-1", captcha_verification=verification)
+    .is_success(),
   )
 }
 
@@ -142,10 +152,7 @@ test "facade get click word without font" {
   // make_pool 只含 originals/sliders，点选底图需单独注册
   let pool = make_pool()
   pool.add_click(make_gradient_bg(310, 155, 42))
-  let service = @service.CaptchaService::with_rng(
-    pool,
-    @common.Rng::new(78UL),
-  )
+  let service = @service.CaptchaService::with_rng(pool, @common.Rng::new(78UL))
   match service.get(cache, @service.ClickWord, client_id="u2") {
     Ok(resp) => {
       assert_true(resp.captcha_type == "clickWord")
@@ -196,7 +203,8 @@ test "facade check failure records fail and locks get" {
         abort("unreachable")
       }
     }
-    let point_json = match @crypto.aes_encrypt("{\"x\": 1, \"y\": 5.0}", resp.secret_key) {
+    let point_json = match
+      @crypto.aes_encrypt("{\"x\": 1, \"y\": 5.0}", resp.secret_key) {
       Some(v) => v
       None => abort("unreachable")
     }
@@ -205,15 +213,18 @@ test "facade check failure records fail and locks get" {
       @service.BlockPuzzle,
       client_id="bad",
       token=resp.token,
-      point_json=point_json,
+      point_json~,
     )
-    assert_true(check_resp.rep_code() == @protocol.ApiCaptchaCoordinateError.code())
+    assert_true(
+      check_resp.rep_code() == @protocol.ApiCaptchaCoordinateError.code(),
+    )
     let _ = i
   }
   // 第 7 次 get：失败数超阈值 → 锁定（6202）
   match service.get(cache, @service.BlockPuzzle, client_id="bad") {
     Ok(_) => assert_true(false)
-    Err(e) => assert_true(e.rep_code().code() == @protocol.ApiReqLockGetError.code())
+    Err(e) =>
+      assert_true(e.rep_code().code() == @protocol.ApiReqLockGetError.code())
   }
   // 其他 client 不受影响
   match service.get(cache, @service.BlockPuzzle, client_id="good") {
@@ -227,7 +238,11 @@ test "facade check failure records fail and locks get" {
 
 ///|
 test "facade kind parse" {
-  assert_true(@service.CaptchaKind::parse("blockPuzzle") is Some(@service.BlockPuzzle))
-  assert_true(@service.CaptchaKind::parse("clickWord") is Some(@service.ClickWord))
+  assert_true(
+    @service.CaptchaKind::parse("blockPuzzle") is Some(@service.BlockPuzzle),
+  )
+  assert_true(
+    @service.CaptchaKind::parse("clickWord") is Some(@service.ClickWord),
+  )
   assert_true(@service.CaptchaKind::parse("rotatePuzzle") is None)
 }

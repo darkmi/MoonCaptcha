@@ -80,11 +80,12 @@ sequenceDiagram
 
 | 能力 | 状态 |
 | --- | --- |
-| 滑动拼图验证（校验流程 + 生成参数逻辑） | 🔄 开发中（核心逻辑已实现并测试） |
-| 文字点选验证（布点 + 逐点校验） | 🔄 开发中（核心逻辑已实现并测试） |
+| 滑动拼图验证（生成 → 校验 → 二次校验全链路） | ✅ 已实现（图像栈完整） |
+| 文字点选验证（布点 + 文字烧录 + 逐点校验） | ✅ 已实现（TTF 字体光栅化） |
 | 图形验证码 | 🚧 规划中 |
 | 弹出式 / 嵌入式 UI | 🚧 规划中 |
-| 后端二次校验 API | ✅ 核心已实现（get/check/verification 流程与协议兼容层） |
+| 后端二次校验 API | ✅ 已实现（门面 CaptchaService + 频控 + CSPRNG） |
+| HTTP 服务示例 | ✅ [examples/js-server](examples/js-server/README.md)（MoonBit 引擎 + Node 宿主，协议 E2E 10/10） |
 | 文档与示例 | 🔄 开发中（[源码分析](docs/aj-captcha-analysis.md) / [迁移设计](docs/migration-design.md) 已发布） |
 
 当前进度详见 [docs/migration-design.md](docs/migration-design.md) §5 里程碑。

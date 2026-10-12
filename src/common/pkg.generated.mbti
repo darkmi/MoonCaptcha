@@ -1,0 +1,59 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "mooncaptcha/mooncaptcha/src/common"
+
+// Values
+pub fn base64_decode(String) -> FixedArray[Int]?
+
+pub fn base64_encode(FixedArray[Int]) -> String
+
+pub fn fixed_from_array(Array[Int]) -> FixedArray[Int]
+
+pub fn json_escape_string(String) -> String
+
+pub fn parse_double(String) -> Double?
+
+pub fn parse_json(String) -> Result[Value, String]
+
+pub fn secure_bytes(Int) -> FixedArray[Int]?
+
+pub fn secure_key16() -> String?
+
+pub fn secure_seed() -> UInt64
+
+pub fn secure_uuid() -> String?
+
+pub fn utf8_decode(FixedArray[Int]) -> String
+
+pub fn utf8_encode(String) -> FixedArray[Int]
+
+// Errors
+
+// Types and methods
+pub struct Rng {
+  mut state : UInt64
+}
+pub fn Rng::from_secure_source() -> Self
+pub fn Rng::new(UInt64) -> Self
+pub fn Rng::next_bounded(Self, Int) -> Int
+pub fn Rng::of(Int) -> Self
+pub fn Rng::random_char(Self, String) -> Char
+pub fn Rng::random_range(Self, Int, Int) -> Int
+pub fn Rng::random_string(Self, Int) -> String
+pub fn Rng::uuid(Self) -> String
+
+pub(all) enum Value {
+  JString(String)
+  JNumber(Double)
+  JBool(Bool)
+  JNull
+  JArray(Array[Value])
+  JObject(Array[(String, Value)])
+}
+pub fn Value::field(Self, String) -> Self?
+pub fn Value::field_int(Self, String) -> Int?
+pub fn Value::field_str(Self, String) -> String?
+pub fn Value::lookup(Array[(String, Self)], String) -> Self?
+
+// Type aliases
+
+// Traits

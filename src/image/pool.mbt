@@ -16,7 +16,7 @@ pub struct ImagePool {
 
 ///|
 pub fn ImagePool::new() -> ImagePool {
-  { originals: [], sliders: [], clicks: [] }
+  { originals: [], sliders: [], clicks: [], }
 }
 
 ///|
@@ -91,10 +91,7 @@ pub fn ImagePool::pick_original(
 }
 
 ///|
-pub fn ImagePool::pick_slider(
-  self : ImagePool,
-  rng : @common.Rng,
-) -> PngImage? {
+pub fn ImagePool::pick_slider(self : ImagePool, rng : @common.Rng) -> PngImage? {
   if self.sliders.length() == 0 {
     return None
   }

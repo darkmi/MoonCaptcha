@@ -6,7 +6,7 @@ priv struct FakeClock {
 
 ///|
 fn FakeClock::make() -> FakeClock {
-  { now: 1_000_000L }
+  { now: 1_000_000L, }
 }
 
 ///|
@@ -85,7 +85,8 @@ test "block_puzzle full flow success" {
   let resp = @service.block_puzzle_check(config, cache, token, point_json)
   assert_true(resp.is_success())
   // 二次校验通过
-  let verification = match @crypto.aes_encrypt(token + "---" + user_json, point.secret_key()) {
+  let verification = match
+    @crypto.aes_encrypt(token + "---" + user_json, point.secret_key()) {
     Some(v) => v
     None => abort("unreachable")
   }
@@ -188,7 +189,8 @@ test "block_puzzle check with wrong aes key fails" {
   let token = rng.uuid()
   @service.block_puzzle_store(config, cache, token, point)
   // 用错误密钥加密 → 解密失败 → 0001
-  let point_json = match @crypto.aes_encrypt("{\"x\": 210, \"y\": 5.0}", "wrongkey12345678") {
+  let point_json = match
+    @crypto.aes_encrypt("{\"x\": 210, \"y\": 5.0}", "wrongkey12345678") {
     Some(v) => v
     None => abort("unreachable")
   }
@@ -200,7 +202,10 @@ test "block_puzzle check with wrong aes key fails" {
 test "block_puzzle check aes disabled passthrough" {
   let clock = FakeClock::make()
   let cache = make_service_cache(clock)
-  let config : @service.CaptchaConfig = { ..@service.CaptchaConfig::default(), aes_enabled: false }
+  let config : @service.CaptchaConfig = {
+    ..@service.CaptchaConfig::default(),
+    aes_enabled: false,
+  }
   let rng = @common.Rng::new(11UL)
   let point = @service.generate_jigsaw_point(rng, 310, 155, 94, 310, false)
   let token = rng.uuid()
@@ -211,7 +216,11 @@ test "block_puzzle check aes disabled passthrough" {
   let resp = @service.block_puzzle_check(config, cache, token, user_json)
   assert_true(resp.is_success())
   // 二次校验凭证同样明文直通
-  let vresp = @service.block_puzzle_verification(config, cache, token + "---" + user_json)
+  let vresp = @service.block_puzzle_verification(
+    config,
+    cache,
+    token + "---" + user_json,
+  )
   assert_true(vresp.is_success())
 }
 
@@ -244,18 +253,25 @@ test "click word full flow success" {
     clicked.push(p)
   }
   let clicked_json = @protocol.Point::list_to_captcha_json(clicked)
-  let point_json = match @crypto.aes_encrypt(clicked_json, point_list[0].secret_key()) {
+  let point_json = match
+    @crypto.aes_encrypt(clicked_json, point_list[0].secret_key()) {
     Some(v) => v
     None => abort("unreachable")
   }
   let resp = @service.click_word_check(config, cache, token, point_json)
   assert_true(resp.is_success())
   // 二次校验
-  let verification = match @crypto.aes_encrypt(token + "---" + clicked_json, point_list[0].secret_key()) {
+  let verification = match
+    @crypto.aes_encrypt(
+      token + "---" + clicked_json,
+      point_list[0].secret_key(),
+    ) {
     Some(v) => v
     None => abort("unreachable")
   }
-  assert_true(@service.click_word_verification(config, cache, verification).is_success())
+  assert_true(
+    @service.click_word_verification(config, cache, verification).is_success(),
+  )
 }
 
 ///|
@@ -274,7 +290,8 @@ test "click word wrong order fails" {
     clicked.push(@protocol.Point::make(p.x(), p.y(), ""))
   }
   let clicked_json = @protocol.Point::list_to_captcha_json(clicked)
-  let point_json = match @crypto.aes_encrypt(clicked_json, point_list[0].secret_key()) {
+  let point_json = match
+    @crypto.aes_encrypt(clicked_json, point_list[0].secret_key()) {
     Some(v) => v
     None => abort("unreachable")
   }
@@ -295,7 +312,8 @@ test "click word click count insufficient" {
   // 只点了一个
   let clicked = [point_list[0]]
   let clicked_json = @protocol.Point::list_to_captcha_json(clicked)
-  let point_json = match @crypto.aes_encrypt(clicked_json, point_list[0].secret_key()) {
+  let point_json = match
+    @crypto.aes_encrypt(clicked_json, point_list[0].secret_key()) {
     Some(v) => v
     None => abort("unreachable")
   }
@@ -335,7 +353,8 @@ test "click word tolerance boundary" {
     clicked.push(@protocol.Point::make(p.x() + 25, p.y() + 25, ""))
   }
   let clicked_json = @protocol.Point::list_to_captcha_json(clicked)
-  let point_json = match @crypto.aes_encrypt(clicked_json, point_list[0].secret_key()) {
+  let point_json = match
+    @crypto.aes_encrypt(clicked_json, point_list[0].secret_key()) {
     Some(v) => v
     None => abort("unreachable")
   }

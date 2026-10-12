@@ -48,10 +48,15 @@ test "rng uuid is 32 lowercase hex chars" {
 test "base64 known vectors" {
   assert_true(@common.base64_encode(@common.fixed_from_array([])) == "")
   assert_true(@common.base64_encode(@common.fixed_from_array([102])) == "Zg==")
-  assert_true(@common.base64_encode(@common.fixed_from_array([102, 111])) == "Zm8=")
-  assert_true(@common.base64_encode(@common.fixed_from_array([102, 111, 111])) == "Zm9v")
   assert_true(
-    @common.base64_encode(@common.fixed_from_array([104, 101, 108, 108, 111])) == "aGVsbG8=",
+    @common.base64_encode(@common.fixed_from_array([102, 111])) == "Zm8=",
+  )
+  assert_true(
+    @common.base64_encode(@common.fixed_from_array([102, 111, 111])) == "Zm9v",
+  )
+  assert_true(
+    @common.base64_encode(@common.fixed_from_array([104, 101, 108, 108, 111])) ==
+    "aGVsbG8=",
   )
 }
 
@@ -204,7 +209,9 @@ test "secure random primitives" {
       assert_true(key.length() == 16)
       for c in key.iter() {
         assert_true(
-          (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'),
+          (c >= 'a' && c <= 'z') ||
+          (c >= 'A' && c <= 'Z') ||
+          (c >= '0' && c <= '9'),
         )
       }
     }

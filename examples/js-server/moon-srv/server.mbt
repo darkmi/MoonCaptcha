@@ -25,7 +25,7 @@ fn gradient_bg(w : Int, h : Int, seed : Int) -> @image.PngImage {
       rgba[i + 3] = 255
     }
   }
-  { width: w, height: h, rgba }
+  { width: w, height: h, rgba, }
 }
 
 ///|
@@ -47,7 +47,7 @@ fn rect_slider(x0 : Int, y0 : Int, x1 : Int, y1 : Int) -> @image.PngImage {
       }
     }
   }
-  { width: w, height: h, rgba }
+  { width: w, height: h, rgba, }
 }
 
 ///|
@@ -62,9 +62,13 @@ fn build_pool() -> @image.ImagePool {
 }
 
 ///|
-let global_state : GlobalState = { service: None, cache: @cache.MemoryCache::new(fn() { @env.now().reinterpret_as_int64() }) }
+let global_state : GlobalState = {
+  service: None,
+  cache: @cache.MemoryCache::new(fn() { @env.now().reinterpret_as_int64() }),
+}
 
 ///|
+
 ///|
 fn state() -> GlobalState {
   global_state
@@ -74,10 +78,10 @@ fn state() -> GlobalState {
 fn ensure_service(font_bytes : FixedArray[Int]?) -> Result[Unit, String] {
   let st = state()
   match st.service {
-    Some(_) => {
+    Some(_) =>
       // 已初始化；仅当携带字体且当前无字体时热更新
       match font_bytes {
-        Some(bytes) => {
+        Some(bytes) =>
           match @image.Font::parse(bytes) {
             Ok(f) => {
               match st.service {
@@ -88,10 +92,8 @@ fn ensure_service(font_bytes : FixedArray[Int]?) -> Result[Unit, String] {
             }
             Err(e) => Err(e)
           }
-        }
         None => Ok(())
       }
-    }
     None => {
       let font : @image.Font? = match font_bytes {
         Some(bytes) =>
@@ -102,7 +104,11 @@ fn ensure_service(font_bytes : FixedArray[Int]?) -> Result[Unit, String] {
         None => None
       }
       st.service = Some(
-        @service.CaptchaService::new(build_pool(), font~, limits=@service.RateLimitConfig::default()),
+        @service.CaptchaService::new(
+          build_pool(),
+          font~,
+          limits=@service.RateLimitConfig::default(),
+        ),
       )
       Ok(())
     }
@@ -176,14 +182,14 @@ pub fn js_captcha_check(request : String) -> String {
     None => "ERR service not initialized"
     Some(svc) =>
       svc
-        .check(
-          state().cache,
-          kind,
-          client_id=req_str(req, "clientId"),
-          token=req_str(req, "token"),
-          point_json=req_str(req, "pointJson"),
-        )
-        .to_json()
+      .check(
+        state().cache,
+        kind,
+        client_id=req_str(req, "clientId"),
+        token=req_str(req, "token"),
+        point_json=req_str(req, "pointJson"),
+      )
+      .to_json()
   }
 }
 
@@ -199,12 +205,12 @@ pub fn js_captcha_verify(request : String) -> String {
     None => "ERR service not initialized"
     Some(svc) =>
       svc
-        .verify(
-          state().cache,
-          client_id=req_str(req, "clientId"),
-          captcha_verification=req_str(req, "captchaVerification"),
-        )
-        .to_json()
+      .verify(
+        state().cache,
+        client_id=req_str(req, "clientId"),
+        captcha_verification=req_str(req, "captchaVerification"),
+      )
+      .to_json()
   }
 }
 

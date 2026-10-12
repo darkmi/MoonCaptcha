@@ -46,7 +46,9 @@ pub fn CaptchaError::message(self : CaptchaError) -> String {
 
 ///|
 /// 转为协议响应（集成层可直接作为 HTTP 应答体）。
-pub fn CaptchaError::to_response(self : CaptchaError) -> @protocol.ResponseModel {
+pub fn CaptchaError::to_response(
+  self : CaptchaError,
+) -> @protocol.ResponseModel {
   @protocol.ResponseModel::error(self.rep_code())
 }
 
@@ -76,7 +78,13 @@ pub fn CaptchaService::new(
   font? : @image.Font? = None,
   limits? : RateLimitConfig = RateLimitConfig::default(),
 ) -> CaptchaService {
-  CaptchaService::with_rng(pool, @common.Rng::from_secure_source(), config~, font~, limits~)
+  CaptchaService::with_rng(
+    pool,
+    @common.Rng::from_secure_source(),
+    config~,
+    font~,
+    limits~,
+  )
 }
 
 ///|
@@ -88,12 +96,15 @@ pub fn CaptchaService::with_rng(
   font? : @image.Font? = None,
   limits? : RateLimitConfig = RateLimitConfig::default(),
 ) -> CaptchaService {
-  { config, pool, font, rng, limits }
+  { config, pool, font, rng, limits, }
 }
 
 ///|
 /// 更新字体（热替换）。
-pub fn CaptchaService::set_font(self : CaptchaService, font : @image.Font?) -> Unit {
+pub fn CaptchaService::set_font(
+  self : CaptchaService,
+  font : @image.Font?,
+) -> Unit {
   self.font = font
 }
 
@@ -111,7 +122,8 @@ pub fn CaptchaService::get(
   }
   match kind {
     BlockPuzzle =>
-      match get_block_puzzle(self.config, self.rng, self.pool, cache, self.font) {
+      match
+        get_block_puzzle(self.config, self.rng, self.pool, cache, self.font) {
         Ok(resp) => Ok(resp)
         Err(_) => Err(CaptchaError::BasemapMissing)
       }

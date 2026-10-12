@@ -1,0 +1,101 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "mooncaptcha/mooncaptcha/src/image"
+
+import {
+  "mooncaptcha/mooncaptcha/src/common",
+}
+
+// Values
+pub fn adler32(FixedArray[Int]) -> Int
+
+pub fn alpha_of(Int) -> Int
+
+pub fn blend_with_white(Int, Int) -> Int
+
+pub fn crc32(FixedArray[Int]) -> Int
+
+pub fn cut_by_template(PixelBuffer, PixelBuffer, Int, Int) -> PixelBuffer
+
+pub fn decode_png(FixedArray[Int]) -> Result[PngImage, String]
+
+pub fn encode_png(PngImage) -> FixedArray[Int]
+
+pub fn estimate_text_width(String, Int) -> Int
+
+pub fn interference_by_template(PixelBuffer, PixelBuffer, Int, Int) -> Unit
+
+pub fn zlib_compress_stored(FixedArray[Int]) -> FixedArray[Int]
+
+pub fn zlib_decompress(FixedArray[Int]) -> Result[FixedArray[Int], String]
+
+// Errors
+
+// Types and methods
+pub struct Font {
+  data : FixedArray[Int]
+  glyf_off : Int
+  loca_off : Int
+  loca_long : Bool
+  cmap_off : Int
+  hmtx_off : Int
+  num_glyphs : Int
+  num_h_metrics : Int
+  units_per_em : Int
+}
+pub fn Font::char_glyph(Self, Char) -> Int
+pub fn Font::draw_text(Self, PixelBuffer, String, Int, Int, Int, Int, Double) -> Int
+pub fn Font::draw_watermark(Self, PixelBuffer, String, Int) -> Unit
+pub fn Font::glyph_advance(Self, Int) -> Int
+pub fn Font::glyph_outline(Self, Int) -> Result[GlyphOutline, String]
+pub fn Font::parse(FixedArray[Int]) -> Result[Self, String]
+
+pub(all) struct GlyphOutline {
+  points : Array[GlyphPoint]
+  contour_ends : Array[Int]
+  advance : Int
+}
+
+pub(all) struct GlyphPoint {
+  x : Int
+  y : Int
+  on_curve : Bool
+}
+
+pub struct ImagePool {
+  originals : Array[PngImage]
+  sliders : Array[PngImage]
+  clicks : Array[PngImage]
+}
+pub fn ImagePool::add_click(Self, PngImage) -> Unit
+pub fn ImagePool::add_click_png(Self, FixedArray[Int]) -> Result[Unit, String]
+pub fn ImagePool::add_original(Self, PngImage) -> Unit
+pub fn ImagePool::add_original_png(Self, FixedArray[Int]) -> Result[Unit, String]
+pub fn ImagePool::add_slider(Self, PngImage) -> Unit
+pub fn ImagePool::add_slider_png(Self, FixedArray[Int]) -> Result[Unit, String]
+pub fn ImagePool::counts(Self) -> (Int, Int, Int)
+pub fn ImagePool::new() -> Self
+pub fn ImagePool::pick_click(Self, @common.Rng) -> PngImage?
+pub fn ImagePool::pick_original(Self, @common.Rng) -> PngImage?
+pub fn ImagePool::pick_slider(Self, @common.Rng) -> PngImage?
+
+pub(all) struct PixelBuffer {
+  width : Int
+  height : Int
+  pixels : FixedArray[Int]
+}
+pub fn PixelBuffer::from_png_image(PngImage) -> Self
+pub fn PixelBuffer::get_rgb(Self, Int, Int) -> Int
+pub fn PixelBuffer::make(Int, Int, Int) -> Self
+pub fn PixelBuffer::new(Int, Int) -> Self
+pub fn PixelBuffer::set_rgb(Self, Int, Int, Int) -> Unit
+pub fn PixelBuffer::to_png_image(Self) -> PngImage
+
+pub(all) struct PngImage {
+  width : Int
+  height : Int
+  rgba : FixedArray[Int]
+}
+
+// Type aliases
+
+// Traits

@@ -57,7 +57,12 @@ pub fn crc32(data : FixedArray[Int]) -> Int {
 }
 
 ///|
-fn crc32_update(c0 : UInt, data : FixedArray[Int], start : Int, end : Int) -> UInt {
+fn crc32_update(
+  c0 : UInt,
+  data : FixedArray[Int],
+  start : Int,
+  end : Int,
+) -> UInt {
   let mut c : UInt = c0
   for i in start..<end {
     let idx = ((c ^ data[i].reinterpret_as_uint()) & 0xFFU).reinterpret_as_int()
@@ -68,7 +73,10 @@ fn crc32_update(c0 : UInt, data : FixedArray[Int], start : Int, end : Int) -> UI
 
 ///|
 fn read_u32be(data : FixedArray[Int], off : Int) -> Int {
-  (data[off] << 24) | (data[off + 1] << 16) | (data[off + 2] << 8) | data[off + 3]
+  (data[off] << 24) |
+  (data[off + 1] << 16) |
+  (data[off + 2] << 8) |
+  data[off + 3]
 }
 
 ///|
@@ -251,7 +259,7 @@ pub fn decode_png(bytes : FixedArray[Int]) -> Result[PngImage, String] {
       rgba[i * 4 + 3] = 255
     }
   }
-  Ok({ width, height, rgba })
+  Ok({ width, height, rgba, })
 }
 
 ///|
@@ -295,7 +303,10 @@ pub fn PixelBuffer::from_png_image(img : PngImage) -> PixelBuffer {
     let g = img.rgba[i * 4 + 1]
     let b = img.rgba[i * 4 + 2]
     let a = img.rgba[i * 4 + 3]
-    buf.pixels[i] = ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF)
+    buf.pixels[i] = ((a & 0xFF) << 24) |
+      ((r & 0xFF) << 16) |
+      ((g & 0xFF) << 8) |
+      (b & 0xFF)
   }
   buf
 }
@@ -312,5 +323,5 @@ pub fn PixelBuffer::to_png_image(self : PixelBuffer) -> PngImage {
     rgba[i * 4 + 2] = p & 0xFF
     rgba[i * 4 + 3] = (p >> 24) & 0xFF
   }
-  { width: self.width, height: self.height, rgba }
+  { width: self.width, height: self.height, rgba, }
 }
