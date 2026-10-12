@@ -1,8 +1,11 @@
 # mooncakes.io 发布方案
 
 > mooncakes.io 是 MoonBit 官方包注册表（类似 npm/crates.io）。本文是 MoonCaptcha
-> 作为第三方类库发布到 mooncakes 的完整方案。发布相关的账号操作需要仓库所有者
-> 人工完成，其余步骤已尽可能落地为可执行命令。
+> 作为第三方类库发布到 mooncakes 的完整方案。
+>
+> **✅ 状态：v0.1.0 已发布（2026-10-13）**——
+> https://mooncakes.io/docs/darkmi/mooncaptcha/
+> 下游引入：deps = { "darkmi/mooncaptcha" = "0.1.0" }（moon update 拉取）
 
 ## 1. 前置决策（需要所有者确认）
 
