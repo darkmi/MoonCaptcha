@@ -47,7 +47,7 @@
 
 ```
 # moon.mod
-deps = { "mooncaptcha/mooncaptcha" = "0.1.0" }
+deps = { "darkmi/mooncaptcha" = "0.1.0" }
 ```
 
 ### 3.2 组装服务（推荐：门面 CaptchaService）

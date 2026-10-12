@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "mooncaptcha/mooncaptcha/src/crypto"
+package "darkmi/mooncaptcha/src/crypto"
 
 // Values
 pub fn aes128_ecb_decrypt(FixedArray[Int], FixedArray[Int]) -> FixedArray[Int]?

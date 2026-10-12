@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "mooncaptcha/mooncaptcha/examples/js-server/moon-srv"
+package "darkmi/mooncaptcha/examples/js-server/moon-srv"
 
 // Values
 pub fn js_captcha_check(String) -> String

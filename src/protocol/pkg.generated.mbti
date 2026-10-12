@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "mooncaptcha/mooncaptcha/src/protocol"
+package "darkmi/mooncaptcha/src/protocol"
 
 // Values
 pub fn check_success_data(String, String) -> String

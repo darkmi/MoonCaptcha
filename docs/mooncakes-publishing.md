@@ -6,15 +6,12 @@
 
 ## 1. 前置决策（需要所有者确认）
 
-### 1.1 模块名与 mooncakes 用户名（必须一致）
+### 1.1 模块名与 mooncakes 用户名（✅ 已决策：darkmi/mooncaptcha）
 
-mooncakes 的模块名格式为 `<用户名>/<包名>`，**第一段必须与 mooncakes 账号用户名一致**。
-当前 `moon.mod` 名为 `mooncaptcha/mooncaptcha`，二选一：
-
-| 方案 | 操作 | 影响 |
-| --- | --- | --- |
-| A. 注册用户名 `mooncaptcha` | 在 mooncakes.io 注册该用户名 | 仓库零改动（推荐，名称更产品化） |
-| B. 模块改名 `darkmi/mooncaptcha` | 改 `moon.mod` name + 全仓 `@common` 等 import 路径 | 需要一次性全仓改名（sed 可批量完成） |
+mooncakes 的模块名格式为 `<用户名>/<包名>`，第一段必须与 mooncakes 账号用户名一致。
+已采用方案 B：模块更名为 `darkmi/mooncaptcha`（2026-10-13 完成全仓改名，
+29 处引用更新，88/88 测试与 js-server E2E 回归通过）。
+仅需在 mooncakes.io 注册用户名 `darkmi`。
 
 ### 1.2 首发版本
 
@@ -78,7 +75,7 @@ env 名称以 `moon login` 的非交互模式文档为准——首次人工发�
 ```
 # moon.mod
 name = "example/app"
-deps = { "mooncaptcha/mooncaptcha" = "0.1.0" }
+deps = { "darkmi/mooncaptcha" = "0.1.0" }
 ```
 
 ```bash
@@ -97,7 +94,7 @@ let resp = svc.get(cache, @service.BlockPuzzle, client_id="…")
 
 | 项 | 状态 |
 | --- | --- |
-| mooncakes 用户名归属（§1.1 方案 A/B） | 待所有者决策 |
+| mooncakes 用户名归属（§1.1） | ✅ 已决策：darkmi（仅需注册账号） |
 | native 目标测试 | 本机无 C 工具链，待 CI ubuntu 验证 |
 | 打包范围控制（exclude） | moon.mod 暂不支持；接受打包 + Apache-2.0 声明随包 |
 | 发布自动化（release workflow） | 首次人工发布成功后补建 |

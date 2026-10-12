@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "mooncaptcha/mooncaptcha/src/common"
+package "darkmi/mooncaptcha/src/common"
 
 // Values
 pub fn base64_decode(String) -> FixedArray[Int]?

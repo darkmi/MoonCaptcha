@@ -2,9 +2,9 @@ pkgtype(kind: "executable")
 
 import {
   "moonbitlang/core/env",
-  "mooncaptcha/mooncaptcha/src/cache",
-  "mooncaptcha/mooncaptcha/src/common",
-  "mooncaptcha/mooncaptcha/src/image",
-  "mooncaptcha/mooncaptcha/src/protocol",
-  "mooncaptcha/mooncaptcha/src/service",
+  "darkmi/mooncaptcha/src/cache",
+  "darkmi/mooncaptcha/src/common",
+  "darkmi/mooncaptcha/src/image",
+  "darkmi/mooncaptcha/src/protocol",
+  "darkmi/mooncaptcha/src/service",
 }
