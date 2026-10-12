@@ -1,0 +1,11 @@
+options(
+  "is-main": true,
+)
+import {
+  "moonbitlang/core/env",
+  "mooncaptcha/mooncaptcha/src/cache",
+  "mooncaptcha/mooncaptcha/src/common",
+  "mooncaptcha/mooncaptcha/src/image",
+  "mooncaptcha/mooncaptcha/src/protocol",
+  "mooncaptcha/mooncaptcha/src/service"
+}
