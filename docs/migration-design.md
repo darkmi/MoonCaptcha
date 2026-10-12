@@ -2,7 +2,7 @@
 
 > 依据：[AJ-Captcha 源码分析](./aj-captcha-analysis.md)（下称"分析文档"）
 > 状态：M1 / M2a 已交付并通过 `moon test`；Web 登录演示已提前交付；类库化设计见 §8。
-> 修订记录：2026-10-12 增补类库化设计（§8）、修订里程碑（§5）、修正 avgMatrix 除数记录（§4.6）；同日 M2b PNG 编解码交付（zlib.mbt/png.mbt，67 测试全绿，与 Node.js zlib/PNG 双向对拍）。
+> 修订记录：2026-10-12 增补类库化设计（§8）、修订里程碑（§5）、修正 avgMatrix 除数记录（§4.6）；同日交付 M2b PNG 编解码与 M2c 资源池，**blockPuzzle 完整 get 打通**（get→check→verify 全链路，72 测试全绿；真实底图+滑块模板逐像素验证：内部像素 5136/5136 一致、凹槽外零变化）。
 
 ## 1. 目标与非目标
 
@@ -91,7 +91,7 @@ AJ-Captcha 自身就用极简 JSON（`JsonUtil` 仅支持 PointVO）。MoonCaptc
 | M2a | `PixelBuffer`（ARGB int，对齐 Java `getRGB/setRGB` 语义）+ `cut_by_template` + 干扰块 + 模糊 + 白描边 | ✅ 已交付 |
 | M2b | PNG 编解码（zlib inflate 全块型 + stored 编码；Node.js 对拍验证） | ✅ 已交付（2026-10-12） |
 | M3 | 字体光栅化（水印 + 点选文字随机旋转/颜色），候选方案：内嵌位图字体或解析 TTF glyf | 待办 |
-| M2c | 底图资源打包（⚠️ 规避 AJ-Captcha 的 `defaultImages/` 资源错位问题，分析文档 §11.5）+ 自定义底图注册 API | 待办 |
+| M2c | ImagePool 资源池（三类图 + PNG 字节注册 + 随机选取）+ tools/gen-assets.js 构建期嵌入工具（⚠️ 规避 AJ-Captcha 的 defaultImages/ 资源错位问题） | ✅ 已交付（2026-10-12） |
 
 > 2026-10-12 修正：重读 Java 源码确认 `avgMatrix` 为 6 像素求和后**仍除以 8**（除数硬编码），M2a 初版误作除 6，已修正并更新测试（`765/8=95`）。该偏差影响凹槽明暗，属视觉级差异。
 
@@ -107,7 +107,7 @@ AJ-Captcha 自身就用极简 JSON（`JsonUtil` 仅支持 PointVO）。MoonCaptc
 | 里程碑 | 内容 | 状态 |
 | --- | --- | --- |
 | **M1 核心逻辑** | common（RNG/UUID/Base64/jsonlite）· crypto（AES/ECB/PKCS7）· cache（trait + 内存实现）· protocol（repCode/VO/Point）· service（blockPuzzle / clickWord 的 check、verification、生成参数） | ✅ 已交付 |
-| **M2 图像栈** | M2a 抠图算法 ✅ → M2b PNG 编解码 ✅ → M2c 底图资源池；打通 blockPuzzle 完整 get | 🔄 M2a/M2b 已交付 |
+| **M2 图像栈** | M2a 抠图 ✅ → M2b PNG 编解码 ✅ → M2c 资源池 ✅；**blockPuzzle 完整 get 已打通**（get→check→verify 全链路测试 + 真实底图/模板逐像素验证） | ✅ 已交付（clickWord get 待 M3 字体） |
 | **M3 文字绘制** | 字体光栅化，打通 clickWord 完整 get | 待办 |
 | **M4 集成层与安全默认值** | 门面 `CaptchaService`（§8.1）· CSPRNG 默认构造（§8.2）· 频控默认开启 · HTTP 端点适配（WASM/Native）· Redis 缓存参考实现。Web 登录演示（`demo/`，Node 参考集成）已提前交付 ✅ | 🔄 进行中 |
 | **M5 扩展** | rotatePuzzle / curveSlider、图形验证码（传统字符型）、UI 组件 | 待办 |
