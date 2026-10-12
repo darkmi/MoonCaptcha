@@ -195,3 +195,34 @@ test "json escape roundtrip" {
     _ => assert_true(false)
   }
 }
+
+///|
+test "secure random primitives" {
+  // wasm 测试运行于 WASI，熵源应可用
+  match @common.secure_key16() {
+    Some(key) => {
+      assert_true(key.length() == 16)
+      for c in key.iter() {
+        assert_true(
+          (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'),
+        )
+      }
+    }
+    None => assert_true(false)
+  }
+  match @common.secure_uuid() {
+    Some(id) => {
+      assert_true(id.length() == 32)
+      for c in id.iter() {
+        assert_true((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'))
+      }
+    }
+    None => assert_true(false)
+  }
+  // 两次种子应当不同（128 位熵下碰撞概率忽略）
+  assert_true(@common.secure_seed() != 0UL)
+  match @common.secure_bytes(8) {
+    Some(bs) => assert_true(bs.length() == 8)
+    None => assert_true(false)
+  }
+}

@@ -2,7 +2,7 @@
 
 > 依据：[AJ-Captcha 源码分析](./aj-captcha-analysis.md)（下称"分析文档"）
 > 状态：M1 / M2a 已交付并通过 `moon test`；Web 登录演示已提前交付；类库化设计见 §8。
-> 修订记录：2026-10-12 增补类库化设计（§8）；同日交付 M2b PNG 编解码、M2c 资源池、M3 字体光栅化（ttf.mbt/font.mbt），**M1–M3 全部完成**——blockPuzzle 与 clickWord 双模式完整 get 均已打通，78 测试全绿；真实底图/滑块模板逐像素验证（5136/5136 一致）+ 文泉驿正黑真实字体渲染 AJ 字池汉字目视验证。
+> 修订记录：2026-10-12/13 增补类库化设计（§8）；交付 M2b PNG 编解码、M2c 资源池、M3 字体光栅化、**M4 安全默认值与门面**（secure_random.mbt：`@env.rand` 跨平台 CSPRNG + 拒绝采样 key16；limit.mbt：滑动窗口频控修复 increment 缺陷 + 失败锁定默认开启；captcha_service.mbt：`CaptchaService` 门面 + CaptchaKind/CaptchaError），88 测试全绿。图像栈 M1–M3 完成：双模式完整 get + 真实底图逐像素验证 + 文泉驿真实字体目视验证。
 
 ## 1. 目标与非目标
 
