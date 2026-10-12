@@ -1,0 +1,375 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #2d3748;
+}
+
+/* ---------- 页头 ---------- */
+
+.page-header {
+  text-align: center;
+  color: #fff;
+  padding: 28px 16px 12px;
+}
+
+.page-header h1 {
+  font-size: 26px;
+  letter-spacing: 0.5px;
+}
+
+.page-header h1 span {
+  font-weight: 400;
+  font-size: 20px;
+  margin-left: 8px;
+  opacity: 0.92;
+}
+
+.page-header p {
+  margin-top: 6px;
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+/* ---------- 布局 ---------- */
+
+.layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px 16px 40px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(30, 30, 70, 0.25);
+  padding: 24px;
+  width: 380px;
+}
+
+.card h2 {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.hint {
+  font-size: 12px;
+  color: #718096;
+  line-height: 1.6;
+}
+
+code {
+  background: #edf2f7;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 12px;
+}
+
+/* ---------- 表单 ---------- */
+
+.field {
+  margin-bottom: 12px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  color: #4a5568;
+  margin-bottom: 4px;
+}
+
+.field input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.field input:focus {
+  border-color: #667eea;
+}
+
+/* ---------- 验证码组件 ---------- */
+
+.mode-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0 10px;
+}
+
+.mode-tab,
+#btn-refresh {
+  flex: 1;
+  height: 34px;
+  border: 1px solid #cbd5e0;
+  background: #f7fafc;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #4a5568;
+  transition: all 0.15s;
+}
+
+.mode-tab.active {
+  background: #667eea;
+  border-color: #667eea;
+  color: #fff;
+}
+
+#btn-refresh {
+  flex: 0 0 64px;
+}
+
+#btn-refresh:hover {
+  background: #edf2f7;
+}
+
+.cap-status {
+  font-size: 13px;
+  padding: 7px 10px;
+  background: #f7fafc;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #4a5568;
+}
+
+.cap-status.ok {
+  background: #f0fff4;
+  color: #276749;
+}
+
+.cap-status.bad {
+  background: #fff5f5;
+  color: #c53030;
+}
+
+.cap-canvas {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #edf2f7;
+  user-select: none;
+  touch-action: none;
+}
+
+.cap-canvas.cap-success {
+  outline: 2px solid #48bb78;
+}
+
+.cap-canvas.cap-fail {
+  outline: 2px solid #fc8181;
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.cap-bg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cap-piece {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: none;
+  cursor: grab;
+}
+
+.cap-word {
+  position: absolute;
+  font-size: 25px;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.cap-marker {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border-radius: 50%;
+  background: rgba(102, 126, 234, 0.85);
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.cap-mask {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.cap-track {
+  position: relative;
+  height: 40px;
+  background: #edf2f7;
+  border-radius: 8px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.cap-handle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 44px;
+  height: 40px;
+  background: #667eea;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 18px;
+  cursor: grab;
+  touch-action: none;
+  z-index: 2;
+}
+
+.cap-handle:active {
+  cursor: grabbing;
+}
+
+.cap-track-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #a0aec0;
+}
+
+.captcha-tip {
+  font-size: 12px;
+  color: #718096;
+  margin: 10px 0;
+}
+
+/* ---------- 登录按钮与提示 ---------- */
+
+.btn-primary {
+  width: 100%;
+  height: 42px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-primary:not(:disabled):hover {
+  opacity: 0.92;
+}
+
+.msg {
+  margin-top: 10px;
+  font-size: 13px;
+  min-height: 18px;
+}
+
+.msg.bad {
+  color: #c53030;
+}
+
+#done-card p {
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+/* ---------- 协议日志 ---------- */
+
+.log-card {
+  width: 420px;
+  max-height: 560px;
+  display: flex;
+  flex-direction: column;
+}
+
+#proto-log {
+  overflow-y: auto;
+  flex: 1;
+  max-height: 440px;
+  background: #1a202c;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: Consolas, monospace;
+  font-size: 11.5px;
+}
+
+.log-empty {
+  color: #718096;
+}
+
+.log-item {
+  margin-bottom: 10px;
+  border-bottom: 1px dashed #2d3748;
+  padding-bottom: 8px;
+}
+
+.log-time {
+  color: #ecc94b;
+  margin-bottom: 3px;
+}
+
+.log-line {
+  color: #a0aec0;
+  word-break: break-all;
+}
+
+.log-ok {
+  color: #68d391;
+}
+
+.log-err {
+  color: #fc8181;
+}
+
+/* ---------- 页脚 ---------- */
+
+.page-footer {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  padding-bottom: 24px;
+}
+
+.page-footer a {
+  color: #fff;
+}

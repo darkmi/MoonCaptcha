@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MoonCaptcha · 行为验证码登录演示</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+  <header class="page-header">
+    <h1>MoonCaptcha <span>行为验证码登录演示</span></h1>
+    <p>基于 AJ-Captcha 兼容协议 · 滑动拼图 / 文字点选 · 服务端二次校验</p>
+  </header>
+
+  <main class="layout">
+    <section class="card" id="login-card">
+      <h2>登录</h2>
+      <div class="field">
+        <label for="username">用户名</label>
+        <input id="username" type="text" placeholder="任意用户名" autocomplete="off"/>
+      </div>
+      <div class="field">
+        <label for="password">密码</label>
+        <input id="password" type="password" placeholder="任意密码"/>
+      </div>
+
+      <div class="mode-tabs">
+        <button class="mode-tab active" data-mode="blockPuzzle">🧩 滑动拼图</button>
+        <button class="mode-tab" data-mode="clickWord">🔤 文字点选</button>
+        <button id="btn-refresh" title="刷新验证码">&#8635; 刷新</button>
+      </div>
+
+      <div id="captcha-panel"><!-- 验证码组件挂载点 --></div>
+      <div class="captcha-tip" id="captcha-tip">请先完成验证码</div>
+
+      <button id="btn-login" class="btn-primary" disabled>登 录</button>
+      <div class="msg" id="login-msg"></div>
+    </section>
+
+    <section class="card hidden" id="done-card">
+      <h2>✅ 登录成功</h2>
+      <p id="done-text"></p>
+      <p class="hint">服务端已通过 <code>/captcha/verify</code> 完成二次校验，凭证一次性使用，重复提交同一凭证将被拒绝（防重放）。</p>
+      <button id="btn-again" class="btn-primary">返回重新演示</button>
+    </section>
+
+    <aside class="card log-card">
+      <h2>协议日志</h2>
+      <p class="hint">实时展示 get / check / verify 的请求与应答（repCode）。</p>
+      <div id="proto-log"><div class="log-empty">暂无请求</div></div>
+    </aside>
+  </main>
+
+  <footer class="page-footer">
+    MoonCaptcha demo · 协议兼容 <a href="https://gitee.com/belief-team/captcha" target="_blank" rel="noopener">AJ-Captcha</a> ·
+    底图资源来自 AJ-Captcha（Apache-2.0）
+  </footer>
+
+  <script src="/aes.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
