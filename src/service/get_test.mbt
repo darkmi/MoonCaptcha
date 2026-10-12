@@ -49,7 +49,7 @@ test "get_block_puzzle produces decodable images with correct dims" {
   let cache = make_service_cache(clock)
   let config = @service.CaptchaConfig::default()
   let rng = @common.Rng::new(99UL)
-  match @service.get_block_puzzle(config, rng, make_pool(), cache) {
+  match @service.get_block_puzzle(config, rng, make_pool(), cache, None) {
     Ok(resp) => {
       assert_true(resp.captcha_type == "blockPuzzle")
       assert_true(resp.secret_key.length() == 16)
@@ -114,7 +114,7 @@ test "get then check then verify full chain" {
   let cache = make_service_cache(clock)
   let config = @service.CaptchaConfig::default()
   let rng = @common.Rng::new(123UL)
-  let resp = match @service.get_block_puzzle(config, rng, make_pool(), cache) {
+  let resp = match @service.get_block_puzzle(config, rng, make_pool(), cache, None) {
     Ok(r) => r
     Err(e) => {
       println(e)
@@ -159,7 +159,7 @@ test "get_block_puzzle background gets a notch" {
   let config = @service.CaptchaConfig::default()
   let rng = @common.Rng::new(7UL)
   let pool = make_pool()
-  let resp = match @service.get_block_puzzle(config, rng, pool, cache) {
+  let resp = match @service.get_block_puzzle(config, rng, pool, cache, None) {
     Ok(r) => r
     Err(_) => abort("unreachable")
   }
@@ -188,14 +188,14 @@ test "get_block_puzzle fails on empty pool" {
   let cache = make_service_cache(clock)
   let config = @service.CaptchaConfig::default()
   let rng = @common.Rng::new(3UL)
-  match @service.get_block_puzzle(config, rng, @image.ImagePool::new(), cache) {
+  match @service.get_block_puzzle(config, rng, @image.ImagePool::new(), cache, None) {
     Ok(_) => assert_true(false)
     Err(e) => assert_true(e.length() > 0)
   }
   // 只有底图没有滑块模板同样失败
   let pool = @image.ImagePool::new()
   pool.add_original(make_gradient_bg(310, 155, 1))
-  match @service.get_block_puzzle(config, rng, pool, cache) {
+  match @service.get_block_puzzle(config, rng, pool, cache, None) {
     Ok(_) => assert_true(false)
     Err(_) => assert_true(true)
   }
@@ -209,7 +209,7 @@ test "get_click_word returns words and stores three points" {
   let rng = @common.Rng::new(55UL)
   let pool = @image.ImagePool::new()
   pool.add_click(make_gradient_bg(310, 155, 9))
-  match @service.get_click_word(config, rng, pool, cache) {
+  match @service.get_click_word(config, rng, pool, cache, None) {
     Ok(resp) => {
       assert_true(resp.captcha_type == "clickWord")
       match resp.word_list {

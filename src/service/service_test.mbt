@@ -229,7 +229,9 @@ test "click word full flow success" {
   let cache = make_service_cache(clock)
   let config = @service.CaptchaConfig::default()
   let rng = @common.Rng::new(12UL)
-  let (word_list, point_list) = @service.generate_click_word_data(rng, 310, 155, config)
+  let data = @service.generate_click_word_data(rng, 310, 155, config)
+  let word_list = data.word_list
+  let point_list = data.point_list
   // 默认绘制 4 字、点击 3 字
   assert_true(word_list.length() == 3)
   assert_true(point_list.length() == 3)
@@ -262,7 +264,7 @@ test "click word wrong order fails" {
   let cache = make_service_cache(clock)
   let config = @service.CaptchaConfig::default()
   let rng = @common.Rng::new(13UL)
-  let (_word_list, point_list) = @service.generate_click_word_data(rng, 310, 155, config)
+  let point_list = @service.generate_click_word_data(rng, 310, 155, config).point_list
   let token = rng.uuid()
   @service.click_word_store(config, cache, token, point_list)
   // 逆序点击
@@ -287,7 +289,7 @@ test "click word click count insufficient" {
   let cache = make_service_cache(clock)
   let config = @service.CaptchaConfig::default()
   let rng = @common.Rng::new(14UL)
-  let (_word_list, point_list) = @service.generate_click_word_data(rng, 310, 155, config)
+  let point_list = @service.generate_click_word_data(rng, 310, 155, config).point_list
   let token = rng.uuid()
   @service.click_word_store(config, cache, token, point_list)
   // 只点了一个
@@ -306,7 +308,7 @@ test "click word points stay in bounds and columns spread" {
   let rng = @common.Rng::new(15UL)
   let config = @service.CaptchaConfig::default()
   for _i in 0..<100 {
-    let (_words, points) = @service.generate_click_word_data(rng, 310, 155, config)
+    let points = @service.generate_click_word_data(rng, 310, 155, config).point_list
     for j, p in points {
       assert_true(p.x() > 0 && p.x() < 310)
       assert_true(p.y() >= 25 && p.y() < 155 - 25)
@@ -324,7 +326,7 @@ test "click word tolerance boundary" {
   let cache = make_service_cache(clock)
   let config = @service.CaptchaConfig::default()
   let rng = @common.Rng::new(16UL)
-  let (_word_list, point_list) = @service.generate_click_word_data(rng, 310, 155, config)
+  let point_list = @service.generate_click_word_data(rng, 310, 155, config).point_list
   let token = rng.uuid()
   @service.click_word_store(config, cache, token, point_list)
   // 恰好偏移容差 25px：边界可接受（Java 条件为严格大于才失败）

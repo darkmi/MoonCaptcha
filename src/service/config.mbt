@@ -13,8 +13,10 @@ pub(all) struct CaptchaConfig {
   han_zi_size : Int
   /// 点选绘制字数，点击字数 = word_total_count - 1（aj.captcha.word-count，默认 4）
   word_total_count : Int
-  /// 滑动干扰项 0/1/2（aj.captcha.interference-options，默认 0；M2 起生效）
+  /// 滑动干扰项 0/1/2（aj.captcha.interference-options，默认 0；M5 起生效）
   interference_options : Int
+  /// 右下角水印文字（aj.captcha.water-mark，默认"我的水印"；空串关闭）
+  water_mark : String
 }
 
 ///|
@@ -27,6 +29,7 @@ pub fn CaptchaConfig::default() -> CaptchaConfig {
     han_zi_size: 25,
     word_total_count: 4,
     interference_options: 0,
+    water_mark: "我的水印",
   }
 }
 

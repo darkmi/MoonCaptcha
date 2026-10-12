@@ -57,18 +57,37 @@ pub fn random_word_point(
 }
 
 ///|
+/// 单个点选字的绘制信息（颜色/旋转在生成期确定，绘制与校验保持一致）。
+pub(all) struct ClickWordChar {
+  word : String
+  x : Int
+  y : Int
+  /// 0xAARRGGBB 不透明文字色（RGB 各分量 ∈ [1,255]，对齐 Java 随机色）
+  color : Int
+  /// 旋转角（度，[-45, 45]）
+  rotation : Int
+}
+
+///|
 /// 点选验证码生成数据，对齐 getImageData：
 /// - 绘制 word_total_count 个字，其中随机 1 个为干扰字（只绘制、不参与校验）
 /// - 干扰字下标 ∈ [0, word_total_count-2]，最后一个字永不成为干扰字
 /// - 所有绘制点的 secretKey 为同一个密钥
-/// 返回 (需点击的字序列, 参与校验的坐标序列)。
-/// 文字绘制（颜色/旋转/光栅化）由集成层按返回的坐标执行（M3 提供字体模块）。
+/// chars 为全部绘制字（含干扰字）；word_list / point_list 为参与校验的子集。
+pub(all) struct ClickWordData {
+  chars : Array[ClickWordChar]
+  word_list : Array[String]
+  point_list : Array[@protocol.Point]
+  secret_key : String
+}
+
+///|
 pub fn generate_click_word_data(
   rng : @common.Rng,
   image_width : Int,
   image_height : Int,
   config : CaptchaConfig,
-) -> (Array[String], Array[@protocol.Point]) {
+) -> ClickWordData {
   let word_count = config.word_total_count
   let han_zi_size = config.han_zi_size
   // 定义随机 1 到 arr.length 某一个字不参与校验
@@ -79,6 +98,7 @@ pub fn generate_click_word_data(
     ""
   }
   let words = random_words(rng, word_count)
+  let chars : Array[ClickWordChar] = []
   let word_list : Array[String] = []
   let point_list : Array[@protocol.Point] = []
   for i, word in words {
@@ -90,14 +110,20 @@ pub fn generate_click_word_data(
       word_count,
       han_zi_size,
     )
-    // 所有绘制点共用同一个 secretKey（对齐 Java 逐点 setSecretKey）
-    let point = @protocol.Point::make(point.x(), point.y(), secret_key)
+    // 随机颜色（RGB 各 [1,255]）与 ±45° 旋转，对齐 Java 绘制期随机
+    let color = (255 << 24) |
+      (rng.random_range(1, 256) << 16) |
+      (rng.random_range(1, 256) << 8) |
+      rng.random_range(1, 256)
+    let rotation = rng.random_range(-45, 46)
+    chars.push({ word, x: point.x(), y: point.y(), color, rotation })
     if i != decoy_index {
+      // 所有绘制点共用同一个 secretKey（对齐 Java 逐点 setSecretKey）
       word_list.push(word)
-      point_list.push(point)
+      point_list.push(@protocol.Point::make(point.x(), point.y(), secret_key))
     }
   }
-  (word_list, point_list)
+  { chars, word_list, point_list, secret_key }
 }
 
 ///|
