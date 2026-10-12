@@ -2,7 +2,7 @@
 
 > 依据：[AJ-Captcha 源码分析](./aj-captcha-analysis.md)（下称"分析文档"）
 > 状态：M1 / M2a 已交付并通过 `moon test`；Web 登录演示已提前交付；类库化设计见 §8。
-> 修订记录：2026-10-12 增补类库化设计（§8）、修订里程碑（§5）、修正 avgMatrix 除数记录（§4.6）。
+> 修订记录：2026-10-12 增补类库化设计（§8）、修订里程碑（§5）、修正 avgMatrix 除数记录（§4.6）；同日 M2b PNG 编解码交付（zlib.mbt/png.mbt，67 测试全绿，与 Node.js zlib/PNG 双向对拍）。
 
 ## 1. 目标与非目标
 
@@ -89,7 +89,7 @@ AJ-Captcha 自身就用极简 JSON（`JsonUtil` 仅支持 PointVO）。MoonCaptc
 | 阶段 | 内容 | 状态 |
 | --- | --- | --- |
 | M2a | `PixelBuffer`（ARGB int，对齐 Java `getRGB/setRGB` 语义）+ `cut_by_template` + 干扰块 + 模糊 + 白描边 | ✅ 已交付 |
-| M2b | PNG 编解码（inflate/deflate；编码先用 stored block，合法但未压缩） | 待办 |
+| M2b | PNG 编解码（zlib inflate 全块型 + stored 编码；Node.js 对拍验证） | ✅ 已交付（2026-10-12） |
 | M3 | 字体光栅化（水印 + 点选文字随机旋转/颜色），候选方案：内嵌位图字体或解析 TTF glyf | 待办 |
 | M2c | 底图资源打包（⚠️ 规避 AJ-Captcha 的 `defaultImages/` 资源错位问题，分析文档 §11.5）+ 自定义底图注册 API | 待办 |
 
@@ -107,7 +107,7 @@ AJ-Captcha 自身就用极简 JSON（`JsonUtil` 仅支持 PointVO）。MoonCaptc
 | 里程碑 | 内容 | 状态 |
 | --- | --- | --- |
 | **M1 核心逻辑** | common（RNG/UUID/Base64/jsonlite）· crypto（AES/ECB/PKCS7）· cache（trait + 内存实现）· protocol（repCode/VO/Point）· service（blockPuzzle / clickWord 的 check、verification、生成参数） | ✅ 已交付 |
-| **M2 图像栈** | M2a 抠图算法 ✅ → M2b PNG 编解码 → M2c 底图资源池；打通 blockPuzzle 完整 get | 🔄 M2a 已交付 |
+| **M2 图像栈** | M2a 抠图算法 ✅ → M2b PNG 编解码 ✅ → M2c 底图资源池；打通 blockPuzzle 完整 get | 🔄 M2a/M2b 已交付 |
 | **M3 文字绘制** | 字体光栅化，打通 clickWord 完整 get | 待办 |
 | **M4 集成层与安全默认值** | 门面 `CaptchaService`（§8.1）· CSPRNG 默认构造（§8.2）· 频控默认开启 · HTTP 端点适配（WASM/Native）· Redis 缓存参考实现。Web 登录演示（`demo/`，Node 参考集成）已提前交付 ✅ | 🔄 进行中 |
 | **M5 扩展** | rotatePuzzle / curveSlider、图形验证码（传统字符型）、UI 组件 | 待办 |
@@ -131,6 +131,7 @@ AJ-Captcha 自身就用极简 JSON（`JsonUtil` 仅支持 PointVO）。MoonCaptc
 | 2026-10-12 | avgMatrix 除数偏差修正（/6 → /8） | `829ea85` |
 | 2026-10-12 | Web 登录演示页（双模式验证码 + 协议端到端 14 项 + 浏览器实测） | `425aa50` |
 | 2026-10-12 | README 双语拆分 | `4a572d9` |
+| 2026-10-12 | M2b PNG 编解码（zlib inflate 全块型 + stored 编码 + PNG 容器，67 测试） | 待提交 |
 
 ## 8. 类库化设计（分发就绪要求）
 

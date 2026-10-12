@@ -1,1 +1,3 @@
-options()
+import {
+  "mooncaptcha/mooncaptcha/src/common"
+}
