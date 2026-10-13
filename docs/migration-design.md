@@ -171,7 +171,7 @@ AJ-Captcha 自身就用极简 JSON（`JsonUtil` 仅支持 PointVO）。MoonCaptc
 - 发布渠道：mooncakes.io（`moon publish`）。
 - 三平台最小集成示例（WASM 绑定 / Native HTTP / JS），一份"从 AJ-Captcha 迁移"指南（最可能的用户群体）。
 - `demo/` → `examples/`（或独立仓库），避免用户误将其当作库的一部分；demo 中的 `wordPositions` 演示专用字段在真实集成中必须替换为服务端图片烧录。
-- **许可边界**：库本体 MIT；`demo/assets` 底图复制自 AJ-Captcha（Apache-2.0），若正式发行版内置这些资源需保留 Apache-2.0 的 NOTICE/协议声明，或替换为自制底图。
+- **许可边界**：库本体 Apache-2.0；`demo/assets` 底图复制自 AJ-Captcha（同为 Apache-2.0），协议兼容；若正式发行版内置这些资源建议保留来源与协议声明，或替换为自制底图。
 - 错误文案 i18n：`repMsg` 现硬编码中文，类库应只保证 repCode 稳定，文案可配置。
 
 ### 8.6 推进顺序

@@ -32,12 +32,12 @@ moon login        # 浏览器跳转 mooncakes.io 完成登录授权
 
 已完成 ✅：
 
-- [x] `moon.mod` 补齐 `license = "MIT"`、`readme = "README.md"`、`repository` 字段
+- [x] `moon.mod` 补齐 `license = "Apache-2.0"`、`readme = "README.md"`、`repository` 字段
 - [x] `.mbti` 接口文件入库（`moon info` 产物，公开 API 面可 review；
       CI 检查接口漂移）
 - [x] 公开 API doc comment 覆盖（六个包核心类型/函数均有中文文档注释）
 - [x] 多目标测试：wasm 88/88、js 88/88（native 依赖 CI 的 ubuntu 环境）
-- [x] LICENSE（MIT）
+- [x] LICENSE（Apache-2.0）
 
 待完成：
 

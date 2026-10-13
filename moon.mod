@@ -2,7 +2,7 @@ name = "darkmi/mooncaptcha"
 
 version = "0.1.0"
 
-license = "MIT"
+license = "Apache-2.0"
 
 readme = "README.md"
 

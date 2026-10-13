@@ -7,7 +7,7 @@
 **A Behavioral CAPTCHA Component Based on MoonBit**
 
 ![Language](https://img.shields.io/badge/language-MoonBit-9B4DFF)
-![License](https://img.shields.io/badge/license-MIT-blue)
+![License](https://img.shields.io/badge/license-Apache_2.0-blue)
 ![Status](https://img.shields.io/badge/status-WIP-orange)
 ![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen)
 
@@ -116,5 +116,5 @@ node demo/server.js
 
 ### 开源协议与致谢
 
-- 本项目基于 [MIT License](./LICENSE) 开源；
+- 本项目基于 [Apache-2.0 License](./LICENSE) 开源；
 - 感谢 [AJ-Captcha (anji-plus/captcha)](https://gitee.com/belief-team/captcha)（Apache-2.0）提供的设计灵感与移植基础。
