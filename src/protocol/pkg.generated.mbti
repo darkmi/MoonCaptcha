@@ -19,17 +19,17 @@ pub fn GetResponse::to_json(Self) -> String
 
 pub struct Point {
   secret_key : String
-  x : Int
-  y : Int
+  x : Int32
+  y : Int32
 }
 pub fn Point::list_to_captcha_json(Array[Self]) -> String
-pub fn Point::make(Int, Int, String) -> Self
+pub fn Point::make(Int32, Int32, String) -> Self
 pub fn Point::parse_captcha_json(String) -> Result[Self, String]
 pub fn Point::parse_captcha_json_array(String) -> Result[Array[Self], String]
 pub fn Point::secret_key(Self) -> String
 pub fn Point::to_captcha_json(Self) -> String
-pub fn Point::x(Self) -> Int
-pub fn Point::y(Self) -> Int
+pub fn Point::x(Self) -> Int32
+pub fn Point::y(Self) -> Int32
 
 pub(all) enum RepCode {
   Success

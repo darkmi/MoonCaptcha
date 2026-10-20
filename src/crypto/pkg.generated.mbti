@@ -2,17 +2,17 @@
 package "darkmi/mooncaptcha/src/crypto"
 
 // Values
-pub fn aes128_ecb_decrypt(FixedArray[Int], FixedArray[Int]) -> FixedArray[Int]?
+pub fn aes128_ecb_decrypt(FixedArray[Int32], FixedArray[Int32]) -> FixedArray[Int32]?
 
-pub fn aes128_ecb_encrypt(FixedArray[Int], FixedArray[Int]) -> FixedArray[Int]?
+pub fn aes128_ecb_encrypt(FixedArray[Int32], FixedArray[Int32]) -> FixedArray[Int32]?
 
 pub fn aes_decrypt(String, String) -> String?
 
 pub fn aes_encrypt(String, String) -> String?
 
-pub fn pkcs7_pad(FixedArray[Int], Int) -> FixedArray[Int]
+pub fn pkcs7_pad(FixedArray[Int32], Int32) -> FixedArray[Int32]
 
-pub fn pkcs7_unpad(FixedArray[Int], Int) -> FixedArray[Int]?
+pub fn pkcs7_unpad(FixedArray[Int32], Int32) -> FixedArray[Int32]?
 
 // Errors
 

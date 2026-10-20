@@ -25,17 +25,17 @@ pub fn click_word_store(CaptchaConfig, &@cache.Cache, String, Array[@protocol.Po
 
 pub fn click_word_verification(CaptchaConfig, &@cache.Cache, String) -> @protocol.ResponseModel
 
-pub fn generate_click_word_data(@common.Rng, Int, Int, CaptchaConfig) -> ClickWordData
+pub fn generate_click_word_data(@common.Rng, Int32, Int32, CaptchaConfig) -> ClickWordData
 
-pub fn generate_jigsaw_point(@common.Rng, Int, Int, Int, Int, Bool) -> @protocol.Point
+pub fn generate_jigsaw_point(@common.Rng, Int32, Int32, Int32, Int32, Bool) -> @protocol.Point
 
 pub fn get_block_puzzle(CaptchaConfig, @common.Rng, @image.ImagePool, &@cache.Cache, @image.Font?) -> Result[@protocol.GetResponse, String]
 
 pub fn get_click_word(CaptchaConfig, @common.Rng, @image.ImagePool, &@cache.Cache, @image.Font?) -> Result[@protocol.GetResponse, String]
 
-pub fn random_word_point(@common.Rng, Int, Int, Int, Int, Int) -> @protocol.Point
+pub fn random_word_point(@common.Rng, Int32, Int32, Int32, Int32, Int32) -> @protocol.Point
 
-pub fn random_words(@common.Rng, Int) -> Array[String]
+pub fn random_words(@common.Rng, Int32) -> Array[String]
 
 pub fn rate_limit_check(RateLimitConfig, &@cache.Cache, String) -> @protocol.RepCode?
 
@@ -53,13 +53,13 @@ pub fn verification(CaptchaConfig, &@cache.Cache, String) -> @protocol.ResponseM
 
 // Types and methods
 pub(all) struct CaptchaConfig {
-  slip_offset : Int
+  slip_offset : Int32
   aes_enabled : Bool
   expires_in_seconds : Int64
   second_expires_in_seconds : Int64
-  han_zi_size : Int
-  word_total_count : Int
-  interference_options : Int
+  han_zi_size : Int32
+  word_total_count : Int32
+  interference_options : Int32
   water_mark : String
 }
 pub fn CaptchaConfig::default() -> Self
@@ -95,10 +95,10 @@ pub fn CaptchaService::with_rng(@image.ImagePool, @common.Rng, config? : Captcha
 
 pub(all) struct ClickWordChar {
   word : String
-  x : Int
-  y : Int
-  color : Int
-  rotation : Int
+  x : Int32
+  y : Int32
+  color : Int32
+  rotation : Int32
 }
 
 pub(all) struct ClickWordData {
@@ -109,10 +109,10 @@ pub(all) struct ClickWordData {
 }
 
 pub(all) struct RateLimitConfig {
-  get_minute_limit : Int
-  check_minute_limit : Int
-  verify_minute_limit : Int
-  fail_lock_threshold : Int
+  get_minute_limit : Int32
+  check_minute_limit : Int32
+  verify_minute_limit : Int32
+  fail_lock_threshold : Int32
   fail_lock_seconds : Int64
 }
 pub fn RateLimitConfig::default() -> Self

@@ -10,12 +10,12 @@ pub struct MemoryCache {
   data : Map[String, String]
   expiry : Map[String, Int64]
   now_ms : () -> Int64
-  max_entries : Int
+  max_entries : Int32
 }
 pub fn MemoryCache::delete(Self, String) -> Unit
 pub fn MemoryCache::exists(Self, String) -> Bool
 pub fn MemoryCache::get(Self, String) -> String?
-pub fn MemoryCache::new(() -> Int64, max_entries? : Int) -> Self
+pub fn MemoryCache::new(() -> Int64, max_entries? : Int32) -> Self
 pub fn MemoryCache::set(Self, String, String, Int64) -> Unit
 pub impl Cache for MemoryCache
 

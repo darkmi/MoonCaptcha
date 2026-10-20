@@ -1,0 +1,24 @@
+# 换行策略：仓库内统一以 LF 存储与检出。
+#
+# eol=lf 的优先级高于本地 core.autocrlf（Windows 上默认为 true），
+# 因此克隆后不会再出现 "LF will be replaced by CRLF" 警告，
+# 也不会出现 Windows / Linux 交叉检出导致的整文件噪声 diff。
+* text=auto eol=lf
+
+# 二进制资源：禁止换行转换与文本 diff。
+# demo/assets 下为 AJ-Captcha 底图（Apache-2.0），随包发布。
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.wasm binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.zip binary
+
+# MoonBit 接口文件：由 `moon info` 产出并入库，作为公开 API 契约。
+# 需与工具链版本保持一致，moon.mod 不支持锁定版本时以 CI 漂移检查兜底。
+*.mbti text eol=lf

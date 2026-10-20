@@ -31,7 +31,13 @@ moon login        # 浏览器跳转 mooncakes.io 完成登录授权
 
 - [x] `moon.mod` 补齐 `license = "MIT"`、`readme = "README.md"`、`repository` 字段
 - [x] `.mbti` 接口文件入库（`moon info` 产物，公开 API 面可 review；
-      CI 检查接口漂移）
+      CI 检查接口漂移：`.github/workflows/ci.yml` 的 `moon info` +
+      `git diff --exit-code -- '*.mbti'`）。当前基线工具链
+      **`moon 0.1.20261016`**——`moon.mod` 无法锁定版本，工具链升级会改写
+      类型打印名（如 `Int` → `Int32`，二者为同一类型的别名，语义不变），
+      届时需重新生成并一并提交，否则 CI 漂移检查会失败
+- [x] `.gitattributes`：换行统一 LF（`eol=lf` 优先于本地 `core.autocrlf`），
+      显式标记 PNG 等二进制资源为 `binary`，消除交叉检出产生的整文件 diff 噪音
 - [x] 公开 API doc comment 覆盖（六个包核心类型/函数均有中文文档注释）
 - [x] 多目标测试：wasm 88/88、js 88/88（native 依赖 CI 的 ubuntu 环境）
 - [x] LICENSE（MIT）

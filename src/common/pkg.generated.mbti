@@ -2,11 +2,11 @@
 package "darkmi/mooncaptcha/src/common"
 
 // Values
-pub fn base64_decode(String) -> FixedArray[Int]?
+pub fn base64_decode(String) -> FixedArray[Int32]?
 
-pub fn base64_encode(FixedArray[Int]) -> String
+pub fn base64_encode(FixedArray[Int32]) -> String
 
-pub fn fixed_from_array(Array[Int]) -> FixedArray[Int]
+pub fn fixed_from_array(Array[Int32]) -> FixedArray[Int32]
 
 pub fn json_escape_string(String) -> String
 
@@ -14,7 +14,7 @@ pub fn parse_double(String) -> Double?
 
 pub fn parse_json(String) -> Result[Value, String]
 
-pub fn secure_bytes(Int) -> FixedArray[Int]?
+pub fn secure_bytes(Int32) -> FixedArray[Int32]?
 
 pub fn secure_key16() -> String?
 
@@ -22,9 +22,9 @@ pub fn secure_seed() -> UInt64
 
 pub fn secure_uuid() -> String?
 
-pub fn utf8_decode(FixedArray[Int]) -> String
+pub fn utf8_decode(FixedArray[Int32]) -> String
 
-pub fn utf8_encode(String) -> FixedArray[Int]
+pub fn utf8_encode(String) -> FixedArray[Int32]
 
 // Errors
 
@@ -34,11 +34,11 @@ pub struct Rng {
 }
 pub fn Rng::from_secure_source() -> Self
 pub fn Rng::new(UInt64) -> Self
-pub fn Rng::next_bounded(Self, Int) -> Int
-pub fn Rng::of(Int) -> Self
+pub fn Rng::next_bounded(Self, Int32) -> Int32
+pub fn Rng::of(Int32) -> Self
 pub fn Rng::random_char(Self, String) -> Char
-pub fn Rng::random_range(Self, Int, Int) -> Int
-pub fn Rng::random_string(Self, Int) -> String
+pub fn Rng::random_range(Self, Int32, Int32) -> Int32
+pub fn Rng::random_string(Self, Int32) -> String
 pub fn Rng::uuid(Self) -> String
 
 pub(all) enum Value {
@@ -50,7 +50,7 @@ pub(all) enum Value {
   JObject(Array[(String, Value)])
 }
 pub fn Value::field(Self, String) -> Self?
-pub fn Value::field_int(Self, String) -> Int?
+pub fn Value::field_int(Self, String) -> Int32?
 pub fn Value::field_str(Self, String) -> String?
 pub fn Value::lookup(Array[(String, Self)], String) -> Self?
 
