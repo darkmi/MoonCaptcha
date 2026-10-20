@@ -1,8 +1,11 @@
 # mooncakes.io 发布方案
 
 > mooncakes.io 是 MoonBit 官方包注册表（类似 npm/crates.io）。本文是 MoonCaptcha
-> 作为第三方类库发布到 mooncakes 的完整方案。发布相关的账号操作需要仓库所有者
-> 人工完成，其余步骤已尽可能落地为可执行命令。
+> 作为第三方类库发布到 mooncakes 的完整方案。
+>
+> **✅ 状态：v0.1.0 已发布（2026-10-13）**——
+> https://mooncakes.io/docs/darkmi/mooncaptcha/
+> 下游引入：deps = { "darkmi/mooncaptcha" = "0.1.0" }（moon update 拉取）
 
 ## 1. 前置决策（需要所有者确认）
 
@@ -29,7 +32,7 @@ moon login        # 浏览器跳转 mooncakes.io 完成登录授权
 
 已完成 ✅：
 
-- [x] `moon.mod` 补齐 `license = "MIT"`、`readme = "README.md"`、`repository` 字段
+- [x] `moon.mod` 补齐 `license = "Apache-2.0"`、`readme = "README.md"`、`repository` 字段
 - [x] `.mbti` 接口文件入库（`moon info` 产物，公开 API 面可 review；
       CI 检查接口漂移：`.github/workflows/ci.yml` 的 `moon info` +
       `git diff --exit-code -- '*.mbti'`）。当前基线工具链
@@ -40,7 +43,7 @@ moon login        # 浏览器跳转 mooncakes.io 完成登录授权
       显式标记 PNG 等二进制资源为 `binary`，消除交叉检出产生的整文件 diff 噪音
 - [x] 公开 API doc comment 覆盖（六个包核心类型/函数均有中文文档注释）
 - [x] 多目标测试：wasm 88/88、js 88/88（native 依赖 CI 的 ubuntu 环境）
-- [x] LICENSE（MIT）
+- [x] LICENSE（Apache-2.0）
 
 待完成：
 

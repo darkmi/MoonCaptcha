@@ -7,7 +7,7 @@
 **A Behavioral CAPTCHA Component Based on MoonBit**
 
 ![Language](https://img.shields.io/badge/language-MoonBit-9B4DFF)
-![License](https://img.shields.io/badge/license-MIT-blue)
+![License](https://img.shields.io/badge/license-Apache_2.0-blue)
 ![Status](https://img.shields.io/badge/status-WIP-orange)
 ![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen)
 
@@ -115,5 +115,5 @@ Issues and pull requests are welcome!
 
 ### License & Acknowledgements
 
-- This project is licensed under the [MIT License](./LICENSE);
+- This project is licensed under the [Apache-2.0 License](./LICENSE);
 - Thanks to [AJ-Captcha (anji-plus/captcha)](https://gitee.com/belief-team/captcha) (Apache-2.0) for the design inspiration and the foundation for this port.
